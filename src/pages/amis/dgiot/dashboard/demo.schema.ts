@@ -24,7 +24,7 @@ const schema = {
                             type: 'button',
                             actionType: 'dialog',
                             label: '新建',
-                            level: 'danger',
+                            level: 'primary',
                             className: 'm-b-sm',
                             dialog: {
                                 body: {
@@ -55,13 +55,14 @@ const schema = {
                                     // "skip": "${page}",
                                     // "limit": "${perPage}",
                                     // "count": "objectId"
-                                }
+                                },
                                 // "adaptor": "return {\n    ...payload,\n    count:payload.count,\n results:payload.results \n}",
 
-                                // "responseData":{
-                                //   "$":"$$",
-                                //   // "rows":"${results}",
-                                // }
+                                responseData: {
+                                    // "$":"$$",
+                                    count: "${count}",
+                                    rows: "${list}",
+                                  }
                             },
                             // "source":"${results}",
                             perPage: 10,
@@ -91,6 +92,7 @@ const schema = {
                                     {
                                         type: 'button',
                                         label: '查询',
+                                        level: "primary",
                                         actionType: 'submit'
                                     }
                                 ],
@@ -99,19 +101,19 @@ const schema = {
                             },
                             columns: [
                                 {
-                                    name: 'objectId',
+                                    name: 'id',
                                     label: '设备编号'
                                 },
                                 {
-                                    name: 'name',
+                                    name: 'title',
                                     label: '名称'
                                 },
                                 {
-                                    name: 'status',
+                                    name: 'ntype',
                                     label: '状态'
                                 },
                                 {
-                                    name: 'createdAt',
+                                    name: 'createtime',
                                     label: '创建时间'
                                 },
                                 {
@@ -154,7 +156,7 @@ const schema = {
                                     ]
                                 }
                             ],
-                            headerToolbar: ['pagination'],
+                            headerToolbar: [],
                             footerToolbar: [
                                 {
                                     type: 'tpl',
@@ -188,7 +190,7 @@ const schema = {
     //   "dataType": "json"
     // },
     messages: {},
-    bodyClassName: 'bg-light'
+    // bodyClassName: 'bg-light'
 };
 export {
     schema

@@ -12,7 +12,7 @@ function detailsDialog() {
         type: 'button',
         label: '查看',
         level: 'info',
-        size: 'xs',
+        // size: 'xs',
         actionType: 'dialog',
         dialog: {
             title: '查看订单 - ${orderCode}',
@@ -44,11 +44,11 @@ function editDialog() {
     return {
         type: 'button',
         label: '编辑',
-        level: 'info',
-        size: 'xs',
+        level: 'success',
+        // size: 'xs',
         actionType: 'dialog',
         dialog: {
-            size: 'xs',
+            // size: 'xs',
             title: '编辑',
             data: {
                 '&': '$$',
@@ -65,7 +65,7 @@ function editDialog() {
                 // },
                 api: {
                     method: 'put',
-                    url: `${serverHost}/iotapi/classes/Device`
+                    url: `/iotapi/classes/Device`
                 },
                 controls: [
                     { type: 'text', name: 'name', label: '设备名称' },
@@ -85,14 +85,26 @@ function deleteDialog() {
         type: 'button',
         label: '删除',
         level: 'danger',
-        size: 'xs',
+        // size: 'xs',
         actionType: 'ajax',
         api: {
             method: 'delete',
-            url: `${serverHost}/iotapi/classes/Device`
+            url: `/iotapi/classes/Device`
         },
         confirmText: '您确认要删除订单:${orderCode}?'
     };
+}
+// 组态框
+function konvaDialog() {
+    return {
+        label: "组态",
+        type: "button",
+        level: "secondary",
+        actionType: "link",
+        link: "../dgiot-amis-dashboard/#/dashboard/konva/${objectId}"
+    }
+
+
 }
 
 const schema = {
@@ -107,10 +119,10 @@ const schema = {
             // --------------------------------------------------------------- 常规配置
             perPageAvailable: [10, 20, 50, 100],
             syncLocation: false,
-            multiple: true,
+            multiple: false,
             keepItemSelectionOnPageChange: false,
             // labelTpl: "${orderCode}",
-            draggable: true,
+            draggable: false,
             hideQuickSaveBtn: false,
             autoJumpToTopOnPagerChange: false,
             affixHeader: false,
@@ -118,13 +130,13 @@ const schema = {
             // --------------------------------------------------------------- 请求数据配置
             api: {
                 method: 'get',
-                url: `${serverHost}/iotapi/classes/Device`
+                url: `/iotapi/classes/Device`
             },
             // defaultParams: { limit: 20, skip: 0 ,order:'-createdAt',where: {'product':{"$ne":null},"name":{"$ne":null,"$exists":true}}},
-            defaultParams: { limit: 20, skip: 0, order: '-createdAt' },
+            defaultParams: { limit: 10, skip: 0, order: '-createdAt' },
             pageField: 'skip',
             perPageField: 'limit',
-            interval: 3000,
+            // interval: 3000,
             silentPolling: true,
             // --------------------------------------------------------------- 查询条件表单配置
             // 条件过滤表单
@@ -155,20 +167,20 @@ const schema = {
                 {
                     type: 'operation',
                     label: '操作',
-                    width: 120,
+                    width: 200,
                     toggled: true,
-                    buttons: [detailsDialog(), editDialog(), deleteDialog()]
+                    buttons: [detailsDialog(), editDialog(), konvaDialog(), deleteDialog()]
                 }
             ],
             // --------------------------------------------------------------- 表格工具栏配置
-            bulkActions: [{ label: '批量操作1' }, { label: '批量操作2' }],
+            // bulkActions: [{ label: '批量操作1' }, { label: '批量操作2' }],
             headerToolbar: [
-                { align: 'left', type: 'button', label: '主操作', level: 'primary', size: 'sm' },
-                { align: 'left', type: 'button', label: '次操作', size: 'sm' },
-                { align: 'left', type: 'bulkActions' },
-                { align: 'right', type: 'columns-toggler' },
-                { align: 'right', type: 'filter-toggler' },
-                { align: 'right', type: 'drag-toggler' },
+                // { align: 'left', type: 'button', label: '主操作', level: 'primary', size: 'sm' },
+                // { align: 'left', type: 'button', label: '次操作', size: 'sm' },
+                // { align: 'left', type: 'bulkActions' },
+                // { align: 'right', type: 'columns-toggler' },
+                // { align: 'right', type: 'filter-toggler' },
+                // { align: 'right', type: 'drag-toggler' },
                 { align: 'right', type: 'export-csv' },
                 { align: 'right', type: 'export-excel' }
             ],

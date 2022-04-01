@@ -117,7 +117,7 @@ const schema = {
             syncResponse2Query: true,
             api: {
                 method: 'get',
-                url: 'http://amis-admin.msvc.top/!/amis-api/curd-page@curdQuery'
+                url: '/!/amis-api/curd-page@curdQuery'
             },
             defaultParams: {
                 pageNo: 1,
@@ -361,7 +361,7 @@ const schema = {
                                     className: 'form-label-5x',
                                     initApi: {
                                         method: 'get',
-                                        url: 'http://amis-admin.msvc.top/!/amis-api/curd-page@getDetail?orderId=$orderId'
+                                        url: '/!/amis-api/curd-page@getDetail?orderId=$orderId'
                                     },
                                     controls: [
                                         {
@@ -428,7 +428,7 @@ const schema = {
                                     className: 'flex-form-label-5x',
                                     api: {
                                         method: 'put',
-                                        url: 'http://amis-admin.msvc.top/!/amis-api/curd-page@mockUpdate?orderId=$orderId'
+                                        url: '/!/amis-api/curd-page@mockUpdate?orderId=$orderId'
                                     },
                                     controls: [
                                         {
@@ -516,7 +516,7 @@ const schema = {
                             actionType: 'ajax',
                             api: {
                                 method: 'delete',
-                                url: 'http://amis-admin.msvc.top/!/amis-api/curd-page@mockDelete?orderId=$orderId'
+                                url: '/!/amis-api/curd-page@mockDelete?orderId=$orderId'
                             },
                             confirmText: '您确认要删除订单:${orderCode}?'
                         }

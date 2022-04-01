@@ -140,7 +140,7 @@ const routerConfigs: LayoutConfig[] = [
           { path: "/index", name: "总控台", icon: "DashboardOutlined", pagePath: "/amis/dgiot/dashboard/index.schema.ts" },
           { path: "/demo", name: "设备管理", icon: "DashboardOutlined", pagePath: "/amis/dgiot/dashboard/demo.schema.ts" },
           // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
-          { path: "/konva", name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx" },
+          { path: "/konva/:objectId", name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true },
           { path: "/05", name: "TS(JS)页面", icon: "BulbOutlined", pagePath: "/typescript/index.html" },
           { path: "/chart", name: "Chart图标", icon: "BulbOutlined", pagePath: "/amis/chart-00.schema.ts" }
         ],

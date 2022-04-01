@@ -64,7 +64,7 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
     const { route, htmlTitleSuffix, layoutMenuData: { currentMenu } } = this.props;
     if (!currentMenu) return "BlankLayout - 404";
     const { currentLocationKey } = this.state;
-    if (!currentLocationKey) return <div/>;
+    if (!currentLocationKey) return <div />;
     return (
       <>
         <Helmet>
@@ -96,8 +96,8 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
         <SimpleBarReact className={classNames(styles.simpleBar)} autoHide={true}>
           {
             pageType === "react" ?
-              (component?.default ? <component.default/> : <div/>) :
-              <div id={mountedDomId} key={mountedDomId} className={styles.pageContent}/>
+              (component?.default ? <component.default /> : <div />) :
+              <div id={mountedDomId} key={mountedDomId} className={styles.pageContent} />
           }
         </SimpleBarReact>
       </Spin>
@@ -127,13 +127,15 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
     }
     return (
       <div className={styles.editCode}>
-        <Button
-          type={showEditCodeModal ? "default" : "primary"}
-          shape={"circle"}
-          size={"large"}
-          icon={showEditCodeModal ? <CloseOutlined/> : <EditOutlined/>}
-          onClick={() => this.setState({ showEditCodeModal: !showEditCodeModal })}
-        />
+        {
+          (location as any).search == undefined ? ('') : (location as any).search.includes("debug=true") ? (<Button
+            type={showEditCodeModal ? "default" : "primary"}
+            shape={"circle"}
+            size={"large"}
+            icon={showEditCodeModal ? <CloseOutlined /> : <EditOutlined />}
+            onClick={() => this.setState({ showEditCodeModal: !showEditCodeModal })}
+          />) : ('')
+        }
         <Drawer
           title={"Amis代码"}
           visible={showEditCodeModal}
@@ -149,7 +151,7 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
             <div style={{ textAlign: 'right' }}>
               <Button
                 type={"primary"}
-                icon={<SaveOutlined/>}
+                icon={<SaveOutlined />}
                 onClick={() => {
                   if (!this.editCodeAmisApp) return;
                   const component = this.editCodeAmisApp.getComponentByName("page.form");
@@ -173,7 +175,7 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
             </div>
           }
         >
-          <div id={editCodeDomId} key={editCodeDomId}/>
+          <div id={editCodeDomId} key={editCodeDomId} />
         </Drawer>
       </div>
     );

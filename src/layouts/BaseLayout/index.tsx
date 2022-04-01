@@ -274,14 +274,16 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
     }
     return (
       <div className={styles.editCode}>
-        <Button
-          style={{ boxShadow: "0px 0px 8px #888888" }}
-          type={showEditCodeModal ? "default" : "primary"}
-          shape={"circle"}
-          size={"large"}
-          icon={showEditCodeModal ? <CloseOutlined/> : <EditOutlined/>}
-          onClick={() => this.setState({ showEditCodeModal: !showEditCodeModal })}
-        />
+        {
+          (location as any).search === undefined ? ('') : (location as any).search.includes("debug=true") ? (<Button
+            style={{ boxShadow: "0px 0px 8px #888888" }}
+            type={showEditCodeModal ? "default" : "primary"}
+            shape={"circle"}
+            size={"large"}
+            icon={showEditCodeModal ? <CloseOutlined /> : <EditOutlined />}
+            onClick={() => this.setState({ showEditCodeModal: !showEditCodeModal })}
+          />) : ('')
+        }
         <Drawer
           title={`Amis代码 - ${multiTab.menuItem.runtimeRouter.pageTitle}`}
           visible={showEditCodeModal}
@@ -297,7 +299,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
             <div style={{ textAlign: 'right' }}>
               <Button
                 type={"primary"}
-                icon={<SaveOutlined/>}
+                icon={<SaveOutlined />}
                 onClick={() => {
                   if (!this.editCodeAmisApp) return;
                   const component = this.editCodeAmisApp.getComponentByName("page.form");
@@ -320,7 +322,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
             </div>
           }
         >
-          <div id={editCodeDomId} key={editCodeDomId}/>
+          <div id={editCodeDomId} key={editCodeDomId} />
         </Drawer>
       </div>
     );
@@ -477,26 +479,26 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
             }}
           >
             <Menu.Item key="closeLeft">
-              <ArrowLeftOutlined/>
+              <ArrowLeftOutlined />
               关闭左侧
             </Menu.Item>
             <Menu.Item key="closeRight">
-              <ArrowRightOutlined/>
+              <ArrowRightOutlined />
               关闭右侧
             </Menu.Item>
             <Menu.Item key="closeOther">
-              <CloseOutlined/>
+              <CloseOutlined />
               关闭其它
             </Menu.Item>
             <Menu.Item key="closeAll">
-              <CloseSquareOutlined/>
+              <CloseSquareOutlined />
               全部关闭
             </Menu.Item>
           </Menu>
         }
       >
         <div className={classNames(styles.multiTabButton)}>
-          <MoreOutlined/>
+          <MoreOutlined />
         </div>
       </Dropdown>
     );
@@ -509,7 +511,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
       if (tab.pageType === "iframe") {
         return (
           <Tabs.TabPane key={multiTabKey} tab={runtimeRouter.name} forceRender={true} closable={true}>
-            <IFramePage defaultSrc={tab.menuItem.runtimeRouter.pagePath} style={{ height: "100%" }}/>
+            <IFramePage defaultSrc={tab.menuItem.runtimeRouter.pagePath} style={{ height: "100%" }} />
           </Tabs.TabPane>
         );
       }
@@ -520,8 +522,8 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
               <SimpleBarReact className={classNames(styles.simpleBar)} autoHide={true}>
                 {
                   tab.pageType === "react" ?
-                    (tab.component?.default ? <tab.component.default key={tab.multiTabKey} menuItem={tab.menuItem} location={tab.location} match={tab.match}/> : <div/>) :
-                    <div id={mountedDomId} key={mountedDomId} className={styles.pageContent}/>
+                    (tab.component?.default ? <tab.component.default key={tab.multiTabKey} menuItem={tab.menuItem} location={tab.location} match={tab.match} /> : <div />) :
+                    <div id={mountedDomId} key={mountedDomId} className={styles.pageContent} />
                 }
               </SimpleBarReact>
             </PageContent>
@@ -541,7 +543,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
       // window.amisPages[amisPageName] = undefined as any;
     });
     // 多页签渲染
-    if (!multiTabs || multiTabs.length <= 0) return <div/>;
+    if (!multiTabs || multiTabs.length <= 0) return <div />;
     return (
       <Tabs
         className={styles.tabs}
