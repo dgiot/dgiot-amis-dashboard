@@ -1,0 +1,42 @@
+//https://www.jianshu.com/p/2b409dfc8f75
+//https://www.jianshu.com/p/df14afcfdb03
+{
+  "defaultSeverity": "error",
+  "extend": [
+    "tslint-config-prettier"
+  ],
+  // 继承 tslint-config-prettier
+  "linterOptions": {
+    "exclude": [
+      "**/node_modules/**"
+    ]
+    // 排除 node_modules
+  },
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "interface-name": false,
+    "promise-function-async": false,
+    "typedef": {
+      "options": [
+        "property-declaration"
+      ]
+    },
+    "class-name": true,
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    },
+    "no-var-keyword": true,
+    "no-var-requires": false,
+    "no-any": false,
+    "no-string-literal": true,
+    "await-promise": true
+  },
+  "rulesDirectory": []
+}

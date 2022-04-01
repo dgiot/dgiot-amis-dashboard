@@ -1,0 +1,67 @@
+/* --------------------------------------------------------------------------------------------------------------------- 水平样式 */
+.avatarHorizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 8px;
+  margin: auto 16px auto 4px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.025);
+  }
+}
+
+/* --------------------------------------------------------------------------------------------------------------------- 垂直样式 */
+
+.avatarVertical {
+  width: 100%;
+  min-width: 8px;
+  margin: 0 auto 16px auto;
+  cursor: pointer;
+
+  &:hover {
+    background: #313336;
+  }
+}
+
+.nickname {
+  background: #001529;
+
+  > :global(.ant-menu-submenu-title) {
+    padding: 0 calc(50% - 28px / 2) !important;
+
+    > :global(.ant-avatar) {
+      height: 100%;
+      top: -2px;
+    }
+  }
+}
+
+.divider {
+  background: #888888 !important;
+}
+
+.menuItem {
+  > :global(.ant-menu.ant-menu-sub.ant-menu-vertical) {
+    width: 96px;
+    min-width: 112px;
+
+    > :global(.ant-menu-item.ant-menu-item-disabled) {
+      cursor: default;
+      //color: rgba(255, 255, 255, 0.65) !important;
+      color: #fff !important;
+      opacity: 1 !important;
+      //background: #313336;
+    }
+
+    > :global(.ant-menu-item.ant-menu-item-selected) {
+      background: #001529;
+      color: rgba(255, 255, 255, 0.65) !important;
+
+      &:hover {
+        color: #fff !important;
+      }
+    }
+  }
+}

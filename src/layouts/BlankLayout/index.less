@@ -1,0 +1,69 @@
+@import "../../assets/css/amis-class-name";
+
+/* --------------------------------------------------------------------------------------------------------------------- Spin组件自定义样式 */
+.spinWrapper {
+  height: 100%;
+
+  :global(.ant-spin-container) {
+    height: 100%;
+  }
+
+  :global(.ant-spin.ant-spin-spinning) {
+    max-height: unset;
+  }
+
+  :global(.amis-scope) {
+    background-color: #ffffff;
+    overflow: visible;
+  }
+}
+
+/* --------------------------------------------------------------------------------------------------------------------- 自定义滚动条样式 */
+.simpleBar {
+  height: 100%;
+  width: 100%;
+
+  :global(.simplebar-content) {
+    height: 100%;
+    width: calc(100% - 4px);
+  }
+}
+
+/* --------------------------------------------------------------------------------------------------------------------- 页面内容区域 */
+.pageContent {
+  height: 100%;
+  width: 100%;
+}
+
+.editCode {
+  position: fixed;
+  right: 24px;
+  bottom: 48px;
+  z-index: 999;
+}
+
+.editCodeDrawer {
+  :global {
+    .@{amisScope} {
+      overflow-y: hidden;
+
+      .@{amisRoutesWrapper}, .@{pagePage}, .@{pageBody}, .@{panel}, .@{panelBody}, .@{panelForm}, .@{form}, .@{formItem} {
+        background-color: #ffffff;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+    }
+
+    .@{editorControl} {
+      height: 100% !important;
+      min-height: unset !important;
+      max-height: unset !important;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+  }
+}

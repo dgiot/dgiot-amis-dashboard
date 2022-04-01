@@ -1,0 +1,69 @@
+.globalSideTop {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-items: center;
+  width: 100%;
+  min-height: 8px;
+}
+
+.globalCentre {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-items: center;
+  width: 100%;
+  overflow: auto;
+}
+
+.globalBottom {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-items: center;
+  width: 100%;
+  min-height: 8px;
+}
+
+.logo {
+  padding: 12px 0 16px 0;
+  margin: 0 auto;
+}
+
+.simpleBar {
+  :global {
+    // 滚动区域
+    .simplebar-track.simplebar-horizontal {
+      // 水平滚动区域
+      visibility: hidden;
+    }
+
+    // 垂直滚动区域
+    .simplebar-track.simplebar-vertical {
+      width: 8px;
+      // 滚动轴
+      .simplebar-scrollbar::before {
+        background-color: #e8e8e8;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.hiddenScrollbarVertical {
+  :global {
+    // 滚动区域
+    .simplebar-track.simplebar-horizontal {
+      // 水平滚动区域
+      visibility: hidden !important;
+    }
+
+    // 垂直滚动区域
+    .simplebar-track.simplebar-vertical {
+      visibility: hidden !important;
+    }
+  }
+}

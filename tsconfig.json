@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "outDir": "./out",
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "sourceMap": true,
+    "baseUrl": ".",
+    "jsx": "react",
+    // "jsx": "preserve", 
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "out",
+    "src/pages-config.js",
+    ".eslintrc.js",
+    "babel.config.js"
+  ]
+}

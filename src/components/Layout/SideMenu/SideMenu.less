@@ -1,0 +1,61 @@
+.sideMenuTop {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 8px;
+}
+
+.sideMenuCentre {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  overflow: auto;
+}
+
+.sideMenuBottom {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 8px;
+}
+
+.inputSearch {
+  margin: 8px 8px 8px 8px;
+}
+
+.secondMenu {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.simpleBar {
+  :global {
+    // 滚动区域
+    .simplebar-track.simplebar-horizontal {
+      // 水平滚动区域
+      visibility: hidden;
+    }
+
+    // 垂直滚动区域
+    .simplebar-track.simplebar-vertical {
+      width: 8px;
+      // 滚动轴
+      .simplebar-scrollbar::before {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+      }
+    }
+  }
+}
