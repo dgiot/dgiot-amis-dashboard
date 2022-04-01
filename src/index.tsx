@@ -1,3 +1,7 @@
+// @ts-nocheck
+// 单行忽略 // @ts-ignore
+// 忽略全文 // @ts-nocheck
+// 取消忽略全文 // @ts-check
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import lodash from 'lodash';

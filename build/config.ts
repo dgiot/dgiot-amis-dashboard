@@ -1,4 +1,5 @@
 import { ProxyConfigMap } from 'webpack-dev-server';
+// @ts-ignore
 import path from 'path';
 import { enableCDN } from './oss.config';
 const { NODE_ENV, ANALYZER } = process.env;
