@@ -62,7 +62,7 @@ const scanHtmlEntry = (config: Configuration, srcPath: string, distPath: string,
       favicon: faviconPath,
       appVersion: settings.appVersion,
       chunks: ["manifest", ...chunks, entryKey!],
-      urlPrefix: enableCDN ? cdnPublicPath : '/dgiot_amis/',
+      urlPrefix: enableCDN ? cdnPublicPath : '/dgiot-amis-dashboard/',
       isDevMode,
     };
     if (settings.mode === "production") {

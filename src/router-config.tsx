@@ -220,7 +220,7 @@ const routerConfigs: LayoutConfig[] = [
         path: "/github",
         name: "github",
         icon: "GithubOutlined",
-        openOptions: { url: "https://github.com/dgiot/dgiot_amis/" },
+        openOptions: { url: "https://github.com/dgiot/dgiot-amis-dashboard/" },
       },
     ],
     // 401: "/blank/login",

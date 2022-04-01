@@ -22,7 +22,7 @@ const aliOssConf = {
   /** CDN访问域名(oss使用域名绑定之后变成CND) */
   cdnUrl: 'http://cdn.static.msvc.top',
   /** app静态资源上传路径 */
-  appPath: 'dgiot_amis',
+  appPath: 'dgiot-amis-dashboard',
   /** 版本号 */
   appVersion: `v${dayjs().format('YYYY-MM-DD-HH-mm-ss')}`,
   // appVersion: 'v0.0.1',

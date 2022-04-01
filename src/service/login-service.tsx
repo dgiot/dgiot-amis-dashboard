@@ -129,7 +129,7 @@ const userLogin = (loginData: any, loginApi: string, securityContext: any, defau
   }
   if (onStart instanceof Function) onStart();
   // 设置header
-  request.post(loginApi, loginData,{ headers: { 'accept': 'application/json', 'Content-Type': 'text/plain' , 'platform': 'dgiot_amis'}})
+  request.post(loginApi, loginData,{ headers: { 'accept': 'application/json', 'Content-Type': 'text/plain' , 'platform': 'dgiot-amis-dashboard'}})
     .then((securityContext) => {
       const { sessionToken, nick, message: msg } = securityContext
       if (!sessionToken || !nick) {

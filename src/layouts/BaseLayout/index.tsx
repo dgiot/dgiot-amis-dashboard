@@ -242,7 +242,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
     const { route, htmlTitleSuffix, layoutMenuData: { currentMenu } } = this.props;
     return (
       <Helmet>
-        <title>{currentMenu ? getHtmlTitle(route, htmlTitleSuffix) : (htmlTitleSuffix || "dgiot_amis")}</title>
+        <title>{currentMenu ? getHtmlTitle(route, htmlTitleSuffix) : (htmlTitleSuffix || "dgiot-amis-dashboard")}</title>
       </Helmet>
     );
   }

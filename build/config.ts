@@ -45,7 +45,7 @@ const settings: Settings = {
         port: 8000,
         needOpenApp: true, // 自动打开浏览器
         /** 打开指定页面 */
-        openPage: 'dgiot_amis',
+        openPage: 'dgiot-amis-dashboard',
         proxy: {
             '/iotapi/': {
                 target: 'http://dev.iotn2n.com',
@@ -73,7 +73,7 @@ const settings: Settings = {
   dateTime: new Date(),
   webpackBanner:
     `build: 杭州数蛙科技有限公司 \n copyright: dgiot \n project : ${pkg.name} \n version : ${pkg.version} \n description : ${pkg.description} \n author: ${pkg.author} \n time:`,
-  tokenName:'dgiot_amis_token',
+  tokenName:'dgiot-amis-dashboard_token',
 };
 
 export { settings };

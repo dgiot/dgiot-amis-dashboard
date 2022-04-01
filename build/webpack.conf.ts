@@ -30,13 +30,13 @@ const srcPath = path.resolve(settings.rootPath, './src');
 // pages文件夹绝对路径
 // const pagesPath = path.resolve(rootPath, `${pathPrefix}/src/pages`);
 // public文件夹绝对路径
-const publicPath = path.resolve(settings.rootPath, './dgiot_amis/public');
+const publicPath = path.resolve(settings.rootPath, './dgiot-amis-dashboard/public');
 // node_modules文件夹绝对路径
 const nodeModulesPath = path.resolve(settings.rootPath, './node_modules');
 // 打包输出目录绝对路径
 const distPath = path.resolve(settings.rootPath, './dist');
 // 网站图标绝对路径
-const faviconPath = path.resolve(settings.rootPath, './dgiot_amis/public/images/favicon.png');
+const faviconPath = path.resolve(settings.rootPath, './dgiot-amis-dashboard/public/images/favicon.png');
 // 访问地址复制到剪切板(只干一次)
 let copyToClipboard = false;
 
@@ -204,7 +204,7 @@ if (isDevMode) {
             path: distPath,
             filename: '[name].bundle.js',
             chunkFilename: '[name].chunk.js',
-            publicPath: '/dgiot_amis/'
+            publicPath: '/dgiot-amis-dashboard/'
         },
         mode: 'development',
         devtool: 'eval-source-map',
@@ -243,7 +243,7 @@ if (isDevMode) {
             host: settings.devServer.host,
             port: settings.devServer.port,
             contentBase: `${settings.rootPath}`,
-            publicPath: '/dgiot_amis/',
+            publicPath: '/dgiot-amis-dashboard/',
             historyApiFallback: true,
             overlay: true,
             hot: true,
@@ -295,7 +295,7 @@ if (!isDevMode) {
             path: distPath,
             filename: '[name].[chunkhash].bundle.js',
             chunkFilename: '[name].[chunkhash].chunk.js',
-            publicPath: enableCDN ? cdnPublicPath : '/dgiot_amis/'
+            publicPath: enableCDN ? cdnPublicPath : '/dgiot-amis-dashboard/'
         },
         mode: 'production',
         module: {
@@ -456,7 +456,7 @@ const options: HtmlWebpackPlugin.Options = {
     favicon: faviconPath,
     appVersion: settings.appVersion,
     chunks: ['manifest', ...chunks, 'schemaApp'],
-    urlPrefix: enableCDN ? cdnPublicPath : '/dgiot_amis/',
+    urlPrefix: enableCDN ? cdnPublicPath : '/dgiot-amis-dashboard/',
     isDevMode,
     ...base64Images
 };
