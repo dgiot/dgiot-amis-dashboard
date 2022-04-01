@@ -1,0 +1,36 @@
+<html><head><script src=https://unpkg.com/konva@4.0.18/konva.min.js></script><script src=https://unpkg.com/gifler@0.1.0/gifler.min.js></script><meta charset=utf-8><title>Konva GIF Demo</title><style>body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #f0f0f0;
+    }</style><link rel=icon href=/dgiot_amis/favicon.png></head><body><div id=container><div class=konvajs-content role=presentation style="position: relative; user-select: none; width: 1536px; height: 722px;"><canvas width=1920 height=902 style="padding: 0px; margin: 0px; border: 0px; background: transparent; position: absolute; top: 0px; left: 0px; width: 1536px; height: 722px; display: block;"></canvas></div></div><script>var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    var stage = new Konva.Stage({
+      container: 'container',
+      width: width,
+      height: height
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    var canvas = document.createElement('canvas');
+    // use external library to parse and draw gif animation
+    function onDrawFrame(ctx, frame) {
+      // update canvas size
+      canvas.width = frame.width;
+      canvas.height = frame.height;
+      // update canvas that we are using for Konva.Image
+      ctx.drawImage(frame.buffer, 0, 0);
+      // redraw the layer
+      layer.draw();
+    }
+
+    gifler('http://konvajs-doc.bluehymn.com/assets/yoda.gif').frames(canvas, onDrawFrame);
+
+    // draw resulted canvas into the stage as Konva.Image
+    var image = new Konva.Image({
+      image: canvas
+    });
+    layer.add(image);</script><script src=/dgiot_amis/manifest.67dd1e6f764a07051e05.bundle.js></script><script src=/dgiot_amis/pages/html/index.ts.1f3df47bf5046ac797a6.chunk.js></script></body></html>
