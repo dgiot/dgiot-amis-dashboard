@@ -10,15 +10,15 @@ import 'simplebar/src/simplebar.css';
 import { logger, setConfig } from '@/utils/logger';
 
 moment.locale('zh-cn');
-const log = logger.getLogger("src/global.tsx");
+const log = logger.getLogger('src/global.tsx');
 
 // 全局日志配置
 setConfig({
-  level: 'log',
-  // moduleNameRegExp: /.*/,
-  // moduleNameRegExp: /^src\/schema-app|src\/utils\/|src\/service\/.*/,
-  // moduleNameRegExp: /src\/schema-app\.tsx/,
-  moduleNameRegExp: /src\/utils\/amis-render-options\.tsx/,
+    level: 'log',
+    // moduleNameRegExp: /.*/,
+    // moduleNameRegExp: /^src\/schema-app|src\/utils\/|src\/service\/.*/,
+    // moduleNameRegExp: /src\/schema-app\.tsx/,
+    moduleNameRegExp: /src\/utils\/amis-render-options\.tsx/
 });
 
-log.info("global.tsx加载完成");
+log.info('global.tsx加载完成');

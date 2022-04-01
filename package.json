@@ -21,7 +21,7 @@
     "build:oss": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' ENABLE_CDN=true OSS_KEY='' OSS_SECRET='' NODE_ENV=production webpack --config build/webpack.conf.ts",
     "release": "node src/utils/release/index.js && standard-version && exit",
     "style": "run-s style:**",
-    "style:prettier": "prettier --write \"src/**/*.ts\"",
+    "style:prettier": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "style:lint": "tslint -p tsconfig.json -c tslint.json",
     "push": "git pull && yarn genlog && git add . && git cz && git push origin master && exit",
     "genlog": "conventional-changelog -p angular -i CHANGELOG.md -s"
