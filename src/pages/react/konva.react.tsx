@@ -5,7 +5,8 @@ import { iotapi } from '@/pages/amis/server-api';
 // antd 文档 https://ant.design/components/table-cn/
 // react 生命周期 https://react.docschina.org/docs/react-component.html
 import konva from 'konva';
-import * as mqtt from 'mqtt';
+import { logger, setConfig } from '@/utils/logger';
+const log = logger.getLogger('src/global.tsx');
 import { connectMqtt } from '../../utils/mqtt/mqttClient1';
 interface DemoPageProps extends ReactPageComponentProps {}
 
@@ -51,9 +52,26 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
             }
         ]
     };
+    
     componentDidMount() {
+       /**
+        * https://blog.csdn.net/jiang7701037/article/details/95407546
+        * react route query
+          */ 
+        const {hash} =   location
+        const queryInfo = {
+            devaddr:hash.split('/')[hash.split('/').length-2],
+            productid:hash.split('/')[hash.split('/').length-1],
+        }
+       this.getKonva(queryInfo)
+        // console.log("location",location);
+    //  const query =    this.getSearchParams(location.search,"objectId")
+    //  console.log(query);
+    //  return 
+
         this.createkonva();
         this.createMqtt();
+        this.getData();
     }
     protected createMqtt() {
         const { hostname, protocol } = location;
@@ -112,6 +130,69 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
         window.konva = konva;
     }
 
+//     protected getSearchParams(search:any,objectid:String) {
+//     const searchParams = {}
+//     const searchStr = search.substring(1)
+//     const searchArr = searchStr.length ? searchStr.split('&') : []
+//     searchArr.forEach((item :any) => {
+//      let keyAndValue =  item.split('=')
+//      let key = decodeURIComponent(keyAndValue[0])
+//      let value = decodeURIComponent(keyAndValue[1])
+//      if(key==objectid){
+//       searchParams[key] = value
+//       return  searchParams[key] 
+//      }
+
+//     })
+//     // const result = objectid
+//     // return searchParams[result]
+//    }
+protected getKonva(params:Object) {
+    // const params = {
+    //     limit: 20,
+    //     skip: 0,
+    //     order: '-createdAt',
+    //     include: 'product,name',
+    //     where: { product: { $ne: null }, name: { $ne: null, $exists: true } }
+    // };
+    this.setState({ loading: true });
+    request
+        .get(`/iotapi/topo`, { params })
+        .then(({data}) => {
+            // alert(data)
+            // log.info("konva",data)
+            console.log('konva', data);
+            const json = {
+                attrs: { width: 1262, height: 440, id: 'attrs' },
+                className: 'Stage',
+                id: 'attrs2',
+                children: [
+                    {
+                        attrs: {},
+                        id: 'Layer',
+                        className: 'Layer',
+                        children: [
+                            {
+                                attrs: { x: 200, y: 200, sides: 6, radius: 70, fill: 'red', stroke: 'black', strokeWidth: 4, id: 'sides' },
+                                className: 'RegularPolygon'
+                            }
+                        ]
+                    }
+                ]
+            };
+            konva.Node.create(json, 'dgiotKonva');
+            window.konva = konva;
+            this.initKonva(data.Stage || json)
+            this.setState({ loading: false });
+            this.setState({ dataSource: data });
+        })
+        .finally(() => this.setState({ loading: false }));
+}
+protected initKonva(data:Object){
+    // createkonva
+    konva.Node.create(data, 'dgiotKonva');
+    // window.konva = konva;
+}
     protected getData() {
         const params = {
             limit: 20,
@@ -122,7 +203,7 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
         };
         this.setState({ loading: true });
         request
-            .get(`${iotapi}/iotapi/classes/Device`, { params })
+            .get(`/iotapi/classes/Device`, { params })
             .then((res) => {
                 this.setState({ loading: false });
                 this.setState({ dataSource: res.results });
@@ -130,6 +211,8 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
             .finally(() => this.setState({ loading: false }));
     }
     render() {
+        const { dataSource } = this.state;
+        log.info("dataSource",dataSource)
         return (
             <Card bordered={false}>
                 <div id="dgiotKonva"></div>

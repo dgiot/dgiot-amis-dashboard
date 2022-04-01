@@ -44,7 +44,7 @@ const settings: Settings = {
     devServer: {
         host: '127.0.0.1',
         port: 8000,
-        needOpenApp: true, // 自动打开浏览器
+        needOpenApp: false, // 自动打开浏览器
         /** 打开指定页面 */
         openPage: 'dgiot-amis-dashboard',
         proxy: {

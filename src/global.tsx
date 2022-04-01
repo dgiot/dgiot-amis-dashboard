@@ -8,9 +8,8 @@ import '@/assets/css/global-class.less';
 import '@/assets/css/amis-class.less';
 import 'simplebar/src/simplebar.css';
 import { logger, setConfig } from '@/utils/logger';
-
-moment.locale('zh-cn');
 const log = logger.getLogger('src/global.tsx');
+moment.locale('zh-cn');
 
 // 全局日志配置
 setConfig({

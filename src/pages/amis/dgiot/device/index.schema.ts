@@ -2,9 +2,9 @@ import classnames from 'classnames';
 import { FormClassName } from '@/amis-types';
 import { enum2object } from '@/utils/enum';
 import { statusMapper } from '../../enum-data';
-import { serverHost } from '../../server-api';
+// import { serverHost } from '../../server-api';
 
-const amisPageName = 'curd';
+// const amisPageName = 'curd';
 
 // 详情对话框
 function detailsDialog() {
@@ -24,7 +24,7 @@ function detailsDialog() {
                 className: classnames(FormClassName.label5x),
                 initApi: {
                     method: 'get',
-                    url: `${serverHost}/iotapi/classes/Device`
+                    url: `/iotapi/classes/Device`
                 },
                 controls: [
                     { type: 'static', name: 'orderId', label: '订单ID' },
@@ -101,7 +101,7 @@ function konvaDialog() {
         type: "button",
         level: "secondary",
         actionType: "link",
-        link: "../dgiot-amis-dashboard/#/dashboard/konva/${objectId}"
+        link: "../dgiot-amis-dashboard/#/dashboard/konva/${devaddr}/${product.objectId}"
     }
 
 
@@ -194,4 +194,4 @@ const schema = {
     ]
 };
 
-export { schema, amisPageName };
+export { schema };

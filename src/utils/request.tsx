@@ -12,7 +12,7 @@ const axiosSettings = {
     // 不经过cookie校验的路由,目前只写了首页
     routingWhitelist: ['blank/login', '/'],
     // 不经过cookie校验的接口,目前只写了登录接口
-    // http://prod.iotn2n.com/swagger/
+    // http://dev.iotn2n.com/swagger/
     cookieWhitelist: ['login']
 };
 // HTTP 状态码错误说明
@@ -37,7 +37,7 @@ const errorMsg = {
 class Request {
     // 全局响应数据转换处理
     protected static transformResponse(response: AxiosResponse): any {
-        console.log('11111111111111111111', response);
+        console.log('全局响应数据转换处理', response);
         return response.data ?? null;
     }
 

@@ -20,7 +20,7 @@ const axiosSettings = {
     // 不经过cookie校验的路由,目前只写了首页
     routingWhitelist: ['blank/login', '/'],
     // 不经过cookie校验的接口,目前只写了登录接口
-    // http://prod.iotn2n.com/swagger/
+    // http://dev.iotn2n.com/swagger/
     cookieWhitelist: ['login']
 };
 const log = logger.getLogger('src/utils/amis-render-options.tsx');

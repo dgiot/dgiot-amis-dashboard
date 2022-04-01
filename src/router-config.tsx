@@ -136,11 +136,12 @@ const routerConfigs: LayoutConfig[] = [
         name: "总控台",
         icon: "HomeOutlined",
         routes: [
-          // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://prod.iotn2n.com" },
+          // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://dev.iotn2n.com" },
           { path: "/index", name: "总控台", icon: "DashboardOutlined", pagePath: "/amis/dgiot/dashboard/index.schema.ts" },
           { path: "/demo", name: "设备管理", icon: "DashboardOutlined", pagePath: "/amis/dgiot/dashboard/demo.schema.ts" },
           // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
-          { path: `/konva/:objectId`, name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true }, //hideBreadcrumb
+          { path: `/konva/:devaddr/:productid`, name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true }, //hideBreadcrumb
+          // { path: `/konva`, name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true },
           { path: "/05", name: "TS(JS)页面", icon: "BulbOutlined", pagePath: "/typescript/index.html" },
           { path: "/chart", name: "Chart图标", icon: "BulbOutlined", pagePath: "/amis/chart-00.schema.ts" }
         ],
@@ -150,7 +151,7 @@ const routerConfigs: LayoutConfig[] = [
         name: "设备云",
         icon: "CodepenCircleOutlined",
         routes: [
-          // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://prod.iotn2n.com" },
+          // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://dev.iotn2n.com" },
           { path: "/index", name: "设备管理", icon: "TableOutlined", pagePath: "/amis/dgiot/device/index.schema.ts"},
           // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
           // { path: "/03", name: "设备管理", icon: "BulbOutlined", pagePath: "/react/01demo.react.tsx" },
