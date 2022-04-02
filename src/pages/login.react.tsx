@@ -33,7 +33,7 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
 
     render() {
         const { loading } = this.state;
-        
+
         return (
             <Layout className={styles.login}>
                 {/*内容*/}

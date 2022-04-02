@@ -130,14 +130,6 @@ let config: Configuration = {
                     '/amis/sdk/**/*.woff2',
                     '/font-awesome/css',
                     '/font-awesome/fonts',
-                    //  vue 相关
-                    isDevMode ? '/vue/dist/vue.js' : '/vue/dist/vue.min.js',
-                    //  element-ui相关 https://element.eleme.cn/#/zh-CN/component/installation
-                    '/element-ui/lib/index.js',
-                    '/element-ui/lib/theme-chalk/index.css',
-                    // ant-design-vue 相关 // https://www.antdv.com/docs/vue/introduce-cn/
-                    isDevMode ? '/ant-design-vue/dist/antd.css' : '/ant-design-vue/dist/antd.min.css',
-                    isDevMode ? '/ant-design-vue/dist/antd.js' : '/ant-design-vue/dist/antd.min.js'
                 ].map((pathItem) => {
                     return {
                         from: `${slash(nodeModulesPath)}${pathItem}`,
@@ -160,7 +152,6 @@ let config: Configuration = {
         'react-dom': 'window.ReactDOM',
         moment: 'moment',
         antd: 'antd',
-        // vue: 'window.vue',
         // "@ant-design/icons": "AntDesignIcons", // 不起作用
         amis: { commonjs: 'amisRequire', amd: 'amisRequire', root: 'amisRequire' }
         // amis: "amisRequire",
@@ -174,7 +165,6 @@ let config: Configuration = {
 const postcssOptions = {
     plugins: [
         ['postcss-preset-env', {}],
-        ['autoprefixer', {}],
         ['postcss-aspect-ratio-mini', {}],
         ['postcss-write-svg', { utf8: false }]
         // ["postcss-px-to-viewport", {

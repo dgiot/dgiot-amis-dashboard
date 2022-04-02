@@ -97,14 +97,12 @@ function deleteDialog() {
 // 组态框
 function konvaDialog() {
     return {
-        label: "组态",
-        type: "button",
-        level: "secondary",
-        actionType: "link",
-        link: "../dgiot-amis-dashboard/#/dashboard/konva/${devaddr}/${product.objectId}"
-    }
-
-
+        label: '组态',
+        type: 'button',
+        level: 'secondary',
+        actionType: 'link',
+        link: '../dgiot-amis-dashboard/#/dashboard/konva/${devaddr}/${product.objectId}'
+    };
 }
 
 const schema = {

@@ -60,9 +60,9 @@ const schema = {
 
                                 responseData: {
                                     // "$":"$$",
-                                    count: "${count}",
-                                    rows: "${list}",
-                                  }
+                                    count: '${count}',
+                                    rows: '${list}'
+                                }
                             },
                             // "source":"${results}",
                             perPage: 10,
@@ -92,7 +92,7 @@ const schema = {
                                     {
                                         type: 'button',
                                         label: '查询',
-                                        level: "primary",
+                                        level: 'primary',
                                         actionType: 'submit'
                                     }
                                 ],
@@ -189,7 +189,7 @@ const schema = {
     //   },
     //   "dataType": "json"
     // },
-    messages: {},
+    messages: {}
     // bodyClassName: 'bg-light'
 };
 export {

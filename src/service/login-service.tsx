@@ -4,7 +4,7 @@ import { request } from '@/utils/request';
 import { logger } from '@/utils/logger';
 import { LayoutConfig, LayoutType, routerHistory } from '@/utils/router';
 import { UserSecurityContext } from '@/utils/security';
-
+import { connectMqtt } from '@/utils/mqtt/mqttClient1';
 const log = logger.getLogger('src/utils/login-service.ts');
 
 /**
@@ -141,15 +141,25 @@ const userLogin = (
             headers: { accept: 'application/json', 'Content-Type': 'text/plain', platform: 'dgiot-amis-dashboard' }
         })
         .then((securityContext) => {
-            const { sessionToken, nick, message: msg } = securityContext;
+            const { sessionToken, nick, message: msg, name } = securityContext;
             if (!sessionToken || !nick) {
                 message.error(msg || '用户名/密码错误').then();
                 return;
             }
             message.success(msg || '登录成功').then();
             if (securityContext) {
+                const { hostname, protocol } = location;
+                const { NODE_ENV } = process.env;
                 // 登录成功之后 存下token
                 // https://github.com/js-cookie/js-cookie#basic-usage
+                // 用户登录成功后，连接mqtt服务
+                const mqttConfig = {
+                    protocol: protocol == 'http:' ? 'ws' : 'wss',
+                    url: NODE_ENV == 'development' ? 'dev.iotn2n.com' : hostname,
+                    port: protocol == 'http:' ? 8083 : 8084
+                };
+                connectMqtt(mqttConfig.url, mqttConfig.port, name, sessionToken, sessionToken, false);
+
                 Cookies.set('authorization', sessionToken);
                 getCurrentUser(securityContext).then(() => {
                     window.appComponent
