@@ -1,6 +1,15 @@
 ## 0.0.2 (2022-04-02)
 
 
+### Features
+
+* **dependencies:** support the latest version of Amis to lock dependent packages ([ceecf4a](https://github.com/dgiot/dgiot-amis-dashboard/commit/ceecf4a2b06444ad20b3dfd266578e567195143b))
+
+
+
+## 0.0.2 (2022-04-02)
+
+
 
 # Changelog
 

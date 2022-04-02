@@ -1,17 +1,17 @@
 // declare module 'antd-dayjs-webpack-plugin';
 // declare module 'webpack-aliyun-oss';
-declare module '*.css';
-declare module '*.less';
-declare module '*.scss';
-declare module '*.sass';
-declare module '*.svg';
-declare module '*.png';
-declare module '*.jpg';
-declare module '*.jpeg';
-declare module '*.gif';
-declare module '*.bmp';
-declare module '*.tiff';
-declare module 'omit.js';
+declare module "*.css";
+declare module "*.less";
+declare module "*.scss";
+declare module "*.sass";
+declare module "*.svg";
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.jpeg";
+declare module "*.gif";
+declare module "*.bmp";
+declare module "*.tiff";
+declare module "omit.js";
 
 /** 是否是生产环境 */
 declare const isProdEnv: boolean;
@@ -116,6 +116,7 @@ interface AppComponent {
 }
 
 interface Window {
+  Konva: any;
   /** 当前登录用户信息 */
   currentUser?: UserInfo;
   /** 应用安全上下文 */
@@ -127,5 +128,5 @@ interface Window {
   /** 当前所有的Amis页面 */
   amisPages: {
     [name: string]: AmisApp;
-  }
+  };
 }

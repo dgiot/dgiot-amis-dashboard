@@ -782,6 +782,7 @@ class BaseLayout<P extends BaseLayoutProps, S extends BaseLayoutState> extends R
                             if (amisPage) window.amisPages[multiTab.amisPageName] = amisPage;
                             // @ts-ignore
                             if (usePageDidUpdate && component.pageDidUpdate)
+                                // @ts-ignore
                                 component.pageDidUpdate(window.amisPages[multiTab.amisPageName]);
                         }
                     }

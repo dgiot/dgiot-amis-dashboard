@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
 import { request } from '@/utils/request';
-import { iotapi } from '@/pages/amis/server-api';
 // antd 文档 https://ant.design/components/table-cn/
 // react 生命周期 https://react.docschina.org/docs/react-component.html
 import konva from 'konva';
@@ -108,7 +107,7 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
         };
         konva.Node.create(json, 'dgiotKonva');
         // ts-ignore
-        window.konva = konva;
+        window.Konva = konva;
     }
 
     //     protected getSearchParams(search:any,objectid:String) {
@@ -171,7 +170,6 @@ class DemoPage extends Component<DemoPageProps, DemoPageState> {
                     ]
                 };
                 konva.Node.create(json, 'dgiotKonva');
-                window.konva = konva;
                 this.initKonva(data.Stage || json);
                 this.setState({ loading: false });
                 this.setState({ dataSource: data });
