@@ -29,17 +29,17 @@ jobs:
       - name: install
         run: yarn install
       - name: build
-        run: yarn build && cp README.md dist/ && cp package.json dist/ && cp CHANGELOG.md dist/
-      - name: Deploy static to github pagese 🚀
+        run: yarn build && cp README.md dist/ && dist/ && cp CHANGELOG.md dist/
+      - name: Deploy static to github pagese
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist
-      - name: Upload  🚀
+      - name: Upload
         uses: actions/upload-artifact@v2
         with:
-          name: dgiot-dashboard
+          name: dgiot-amis-dashboard
           path: dist
       - name: lighthouse 🚀
         uses: treosh/lighthouse-ci-action@v2
@@ -47,3 +47,16 @@ jobs:
           runs: 5
           uploadArtifacts: true
           configPath: './.github/workflows/setup/lighthouse-audit.json'
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@v1.0
+        with:
+          src: github/dgiot
+          dst: gitee/dgiiot
+          dst_key: ${{ secrets.PRIVATE_KEY }}
+          dst_token:  ${{ secrets.TOKEN }}
+          account_type: org
+          timeout: '1h'
+          debug: true
+          force_update: true
+          static_list: "dgiot-amis-dashboard"
+          black_list: "issue-generator,dgiot-dashboard"
