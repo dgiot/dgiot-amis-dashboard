@@ -3,7 +3,7 @@ import { ProxyConfigMap } from "webpack-dev-server";
 import path from "path";
 import { enableCDN } from "./oss.config";
 
-const { NODE_ENV, ANALYZER, Compression_Type } = process.env;
+const { NODE_ENV, ANALYZER, COMPRESSION_TYPE } = process.env;
 const pkg = require("../package.json");
 
 interface Settings {
@@ -27,7 +27,7 @@ interface Settings {
   };
   /** 需要 Analyzer */
   needAnalyzer: boolean;
-  Compression_Type: string;
+  COMPRESSION_TYPE: boolean;
   /** HTML页面默认标题 */
   defaultTitle: string;
   /** 自定义全局变量 */
@@ -70,7 +70,7 @@ const settings: Settings = {
     }
   },
   needAnalyzer: true,
-  Compression_Type: Compression_Type,
+  COMPRESSION_TYPE:COMPRESSION_TYPE == "gzip",
   defaultTitle: "dgiot-amis-dashboard",
   define: {
     isProdEnv: NODE_ENV === "production",
