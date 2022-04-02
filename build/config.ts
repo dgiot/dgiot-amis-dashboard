@@ -65,8 +65,8 @@ const settings: Settings = {
             // }
         }
     },
-    needAnalyzer: !!ANALYZER,
-    defaultTitle: 'Dgiot Amis',
+    needAnalyzer: true,
+    defaultTitle: 'dgiot-amis-dashboard',
     define: {
         isProdEnv: NODE_ENV === 'production',
         enableCDN: enableCDN
