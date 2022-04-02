@@ -28,14 +28,21 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
       - name: install
         run: yarn install
-      - name: build
-        run: yarn build && cp README.md dist/ && dist/ && cp CHANGELOG.md dist/
+      - name: build:Compression
+        run: yarn build:Compression && cp README.md dist/ && cp CHANGELOG.md dist/
+      - name: Upload:Compression
+        uses: actions/upload-artifact@v2
+        with:
+          name: dgiot-amis-dashboard-Compression
+          path: dist
       - name: Deploy static to github pagese
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist
+      - name: build
+        run: yarn build
       - name: Upload
         uses: actions/upload-artifact@v2
         with:

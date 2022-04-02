@@ -16,6 +16,7 @@
     "dev:analyzer": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' NODE_ENV=development ANALYZER=1 webpack-dev-server --config build/webpack.conf.ts",
     "amis": "npm run build && npm run copy",
     "build": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' NODE_ENV=production webpack --config build/webpack.conf.ts",
+    "build:Compression": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' NODE_ENV=production webpack Compression_Type=gzip --config build/webpack.conf.ts",
     "copy": "sh copy.sh",
     "build:analyzer": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' NODE_ENV=production ANALYZER=1 webpack --config build/webpack.conf.ts",
     "build:oss": "cross-env TS_NODE_PROJECT='./build/webpack.tsconfig.json' ENABLE_CDN=true OSS_KEY='' OSS_SECRET='' NODE_ENV=production webpack --config build/webpack.conf.ts",

@@ -344,14 +344,6 @@ if (!isDevMode) {
         chunkFilename: "[name].[hash].css",
         ignoreOrder: false
       }),
-      new CompressionWebpackPlugin({
-        filename: "[path][base].gz", // 一个 {Function} (asset) => asset 函数，接收原资源名（通过 asset 选项）返回新资源名
-        algorithm: "gzip", // 可以是 (buffer, cb) => cb(buffer) 或者是使用 zlib 里面的算法的 {String}
-        test: productionGzipExtensions,
-        threshold: 2048, //对1K以上的数据进行压缩
-        minRatio: 0.8, // 只有压缩率比这个值小的资源才会被处理
-        deleteOriginalAssets: false //是否删除源文件
-      }),
       // @ts-ignore
       new BannerPlugin({
         banner: `${settings.webpackBanner}${settings.dateTime}`
@@ -502,10 +494,21 @@ if (settings.needAnalyzer) {
       analyzerPort: 9528,
       analyzerMode: "true",
       openAnalyzer: false,
-      generateStatsFile: true, // 是否生成stats.json文件
+      generateStatsFile: false, // 是否生成stats.json文件
       reportFilename: `${settings.rootPath}/dist/report.html`
     })
   );
+}
+
+if(settings.Compression_Type === "gzip"){
+  config.plugins.push(new CompressionWebpackPlugin({
+    filename: "[path][base].gz", // 一个 {Function} (asset) => asset 函数，接收原资源名（通过 asset 选项）返回新资源名
+    algorithm: "gzip", // 可以是 (buffer, cb) => cb(buffer) 或者是使用 zlib 里面的算法的 {String}
+    test: productionGzipExtensions,
+    threshold: 2048, //对1K以上的数据进行压缩
+    minRatio: 0.8, // 只有压缩率比这个值小的资源才会被处理
+    deleteOriginalAssets: false //是否删除源文件
+  }))
 }
 
 // CDN支持(静态资源上传到阿里OSS)
