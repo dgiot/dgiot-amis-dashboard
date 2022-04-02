@@ -3,18 +3,29 @@ name: deploy
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
+# 设置上海时区
+env:
+  TZ: Asia/Shanghai
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
-
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.13.2 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v2.1.3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
       - name: install
         run: yarn install
       - name: build
@@ -25,3 +36,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist
+      - name: Upload  🚀
+        uses: actions/upload-artifact@v2
+        with:
+          name: dgiot-dashboard
+          path: dist
+      - name: lighthouse 🚀
+        uses: treosh/lighthouse-ci-action@v2
+        with:
+          runs: 5
+          uploadArtifacts: true
+          configPath: './.github/workflows/setup/lighthouse-audit.json'
