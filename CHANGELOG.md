@@ -9,6 +9,38 @@
 ### Features
 
 * **api:** iotapi ([09f0f26](https://github.com/dgiot/dgiot-amis-dashboard/commit/09f0f266477dbc4eb4e2c500cf3652935390ebf4))
+* **ci:** deploy ([1cb257d](https://github.com/dgiot/dgiot-amis-dashboard/commit/1cb257da14c762058f911613e8bd2eab7251177d))
+* **dependencies:** support the latest version of Amis to lock dependent packages ([ceecf4a](https://github.com/dgiot/dgiot-amis-dashboard/commit/ceecf4a2b06444ad20b3dfd266578e567195143b))
+
+
+
+## 0.0.2 (2022-04-02)
+
+
+### Bug Fixes
+
+* **build:** optimize compilation and packaging speed ([cb67d3f](https://github.com/dgiot/dgiot-amis-dashboard/commit/cb67d3f818d1d242e5e6125d196849caccb843b5))
+
+
+### Features
+
+* **api:** iotapi ([09f0f26](https://github.com/dgiot/dgiot-amis-dashboard/commit/09f0f266477dbc4eb4e2c500cf3652935390ebf4))
+* **ci:** deploy ([1cb257d](https://github.com/dgiot/dgiot-amis-dashboard/commit/1cb257da14c762058f911613e8bd2eab7251177d))
+* **dependencies:** support the latest version of Amis to lock dependent packages ([ceecf4a](https://github.com/dgiot/dgiot-amis-dashboard/commit/ceecf4a2b06444ad20b3dfd266578e567195143b))
+
+
+
+## 0.0.2 (2022-04-02)
+
+
+### Bug Fixes
+
+* **build:** optimize compilation and packaging speed ([cb67d3f](https://github.com/dgiot/dgiot-amis-dashboard/commit/cb67d3f818d1d242e5e6125d196849caccb843b5))
+
+
+### Features
+
+* **api:** iotapi ([09f0f26](https://github.com/dgiot/dgiot-amis-dashboard/commit/09f0f266477dbc4eb4e2c500cf3652935390ebf4))
 * **dependencies:** support the latest version of Amis to lock dependent packages ([ceecf4a](https://github.com/dgiot/dgiot-amis-dashboard/commit/ceecf4a2b06444ad20b3dfd266578e567195143b))
 
 

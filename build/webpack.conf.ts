@@ -500,7 +500,7 @@ if (settings.needAnalyzer) {
   config.plugins.push(
     new BundleAnalyzerPlugin({
       analyzerPort: 9528,
-      analyzerMode: "disabled",
+      analyzerMode: "true",
       openAnalyzer: false,
       generateStatsFile: true, // 是否生成stats.json文件
       reportFilename: `${settings.rootPath}/dist/report.html`
