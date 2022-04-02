@@ -5,6 +5,6 @@
  *  version : 0.0.2 
  *  description : dgiot-amis-dashboard 脚手架 
  *  author: h7ml(h7ml@qq.com) 
- *  time:Sat Apr 02 2022 15:24:39 GMT+0800 (China Standard Time)
+ *  time:Sat Apr 02 2022 15:39:59 GMT+0800 (China Standard Time)
  */
 (window.webpackJsonp=window.webpackJsonp||[]).push([[2],{NiBP:function(t,e,n){"use strict";n.r(e);var i=n("cDcd"),a=n.n(i),r=n("Exp3");e.default=function(){return a.a.createElement(r.Result,{status:"403",title:"403",subTitle:a.a.createElement("div",{style:{fontSize:14,fontWeight:"bold"}},"抱歉，您无权访问此页面。"),extra:a.a.createElement(r.Button,{type:"primary",onClick:function(){return history.back()}},"返回上一页")})}}}]);
