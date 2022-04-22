@@ -27,23 +27,77 @@ const schema = {
                             level: 'primary',
                             className: 'm-b-sm',
                             dialog: {
+                                closeOnEsc: true,
+                                api: '/usemock/device/listAll',
+                                actions: [
+                                    {
+                                      label: "取消",
+                                      actionType: "close",
+                                      type: "button"
+                                    },
+                                    {
+                                      label: "提交",
+                                      actionType: "confirm",
+                                      type: "button",
+                                      level: "primary"
+                                    },
+                                  ],
                                 body: {
                                     api: 'post:/amis/api/mock2/sample',
+                                    // "closeOnEsc": true,
+                                    // mode: "normal",
                                     body: [
                                         {
                                             name: 'engine',
+                                            type: 'select',
+                                            label: '产出物料',
+                                            searchable: true,
+                                            source: "/usemock/getWuliao",
+                                            // deferApi: "/usemock/device/listAll",
+                                            required: true
+                                        },
+                                        {
+                                            name: 'code',
                                             type: 'input-text',
-                                            label: 'Engine'
+                                            label: '唯一码',
+                                            required: true
+                                        },
+                                        {
+                                            name: 'step',
+                                            type: 'nested-select',
+                                            label: '工艺步骤',
+                                            selectMode: "tree",
+                                            source: "/usemock/getgongyi",
+                                            required: true
                                         },
                                         {
                                             name: 'browser',
                                             type: 'input-text',
-                                            label: 'Browser'
-                                        }
+                                            label: '生产单元',
+                                            required: true
+                                        },
+                                        {
+                                            name: 'starttime',
+                                            type: 'input-datetime',
+                                            minDate: '${starttime}',
+                                            placeholder: '起始时间',
+                                            label: '起始时间',
+                                            inputClassName: 'w-md',
+                                            required: true
+                                        },
+                                        {
+                                            name: 'endtime',
+                                            type: 'input-datetime',
+                                            maxDate: '${endtime}',
+                                            placeholder: '结束时间',
+                                            label: '结束时间',
+                                            inputClassName: 'w-md',
+                                            required: true
+                                        },
                                     ],
                                     type: 'form'
                                 },
-                                title: '新增表单'
+                                title: '产出信息'
                             }
                         },
                         {
@@ -73,7 +127,7 @@ const schema = {
                                         name: 'keywords',
                                         size: 'md',
                                         type: 'input-text',
-                                        placeholder: '通过关键字搜索'
+                                        placeholder: '按物料代码/唯一码查询'
                                     },
                                     {
                                         name: 'starttime',
@@ -102,19 +156,35 @@ const schema = {
                             columns: [
                                 {
                                     name: 'id',
-                                    label: '设备编号'
+                                    label: '物料'
                                 },
                                 {
                                     name: 'title',
-                                    label: '名称'
+                                    label: '唯一码'
                                 },
                                 {
                                     name: 'ntype',
-                                    label: '状态'
+                                    label: '生产开始时间'
                                 },
                                 {
                                     name: 'createtime',
-                                    label: '创建时间'
+                                    label: '生产开始时间'
+                                },
+                                {
+                                    name: 'endtime',
+                                    label: '生产结束时间'
+                                },
+                                {
+                                    name: 'step',
+                                    label: '工艺步骤'
+                                },
+                                {
+                                    name: 'danyuan',
+                                    label: '生产单元'
+                                },
+                                {
+                                    name: 'num',
+                                    label: '数量'
                                 },
                                 {
                                     type: 'operation',
@@ -122,7 +192,7 @@ const schema = {
                                     buttons: [
                                         {
                                             type: 'button',
-                                            label: '修改',
+                                            label: '编辑',
                                             drawer: {
                                                 body: {
                                                     api: 'post:/amis/api/mock2/sample/${id}',

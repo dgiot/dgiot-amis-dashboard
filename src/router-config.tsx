@@ -143,14 +143,15 @@ const routerConfigs: LayoutConfig[] = [
                 routes: [
                     // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://dev.iotn2n.com" },
                     { path: '/index', name: '总控台', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/index.schema.ts' },
-                    { path: '/demo', name: '设备管理', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/demo.schema.ts' },
+                    { path: '/demo', name: '生产报工', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/demo.schema.ts' },
                     // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
                     {
                         path: `/konva/:devaddr/:productid`,
                         name: 'konva',
                         icon: 'BulbOutlined',
                         pagePath: '/react/konva.react.tsx',
-                        hideMenu: true
+                        hideMenu: true,
+                        hideChildrenMenu:true,
                     }, //hideBreadcrumb
                     // { path: `/konva`, name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true },
                     { path: '/05', name: 'html页面', icon: 'BulbOutlined', pagePath: '/typescript/index.html' },

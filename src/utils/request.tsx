@@ -12,7 +12,7 @@ const axiosSettings = {
     // 不经过cookie校验的路由,目前只写了首页
     routingWhitelist: ['blank/login', '/'],
     // 不经过cookie校验的接口,目前只写了登录接口
-    // http://dev.iotn2n.com/swagger/
+    // http://47.118.69.187/swagger/
     cookieWhitelist: ['login']
 };
 // HTTP 状态码错误说明

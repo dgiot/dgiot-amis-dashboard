@@ -15,24 +15,24 @@ function detailsDialog() {
         // size: 'xs',
         actionType: 'dialog',
         dialog: {
-            title: '查看订单 - ${orderCode}',
+            title: '查看设备 - ${orderCode}',
             closeOnEsc: true,
             actions: [{ type: 'button', label: '关闭', level: 'primary', actionType: 'close' }],
             body: {
                 type: 'form',
                 // mode: "inline",
                 className: classnames(FormClassName.label5x),
-                initApi: {
-                    method: 'get',
-                    url: `/iotapi/classes/Device`
-                },
+                // initApi: {
+                //     method: 'get',
+                //     url: `/iotapi/classes/Device`
+                // },
                 controls: [
-                    { type: 'static', name: 'orderId', label: '订单ID' },
-                    { type: 'static', name: 'orderCode', label: '订单编号' },
-                    { type: 'mapping', name: 'status', label: '订单状态', map: enum2object(statusMapper) },
-                    { type: 'static', name: 'shipName', label: '收货人' },
-                    { type: 'static', name: 'shipMobile', label: '手机号' },
-                    { type: 'static', name: 'shipAddr', label: '地址' }
+                    { type: 'static', name: 'name', label: '设备名称' },
+                    { type: 'static', name: 'devaddr', label: '设备编号' },
+                    { type: 'static', name: 'detail.brand', label: '设备品牌' },
+                    { type: 'static', name: 'detail.devModel', label: '设备型号' },
+                    { type: 'static', name: 'detail.address', label: '安装位置' },
+                    { type: 'static', name: 'detail.desc', label: '描述' }
                 ]
             }
         }
@@ -89,9 +89,9 @@ function deleteDialog() {
         actionType: 'ajax',
         api: {
             method: 'delete',
-            url: `/iotapi/classes/Device`
+            url: '/iotapi/amis_device?deviceid=${objectId}'
         },
-        confirmText: '您确认要删除订单:${orderCode}?'
+        confirmText: '您确认要删除该设备:${objectId}?'
     };
 }
 // 组态框
@@ -109,7 +109,7 @@ const schema = {
     type: 'page',
     name: 'page',
     title: '',
-    toolbar: [],
+    // toolbar: [],
     body: [
         {
             type: 'crud',
@@ -128,17 +128,28 @@ const schema = {
             // --------------------------------------------------------------- 请求数据配置
             api: {
                 method: 'get',
-                url: `/iotapi/classes/Device`
+                url: `/iotapi/amis_device_list`,
+                "responseData": {
+                    "&": "$$",
+                    "items": "${results}"
+                  }
+                // data: {
+                //     "skip": '(${skip}-1)*${limit}',
+                //     "limit": '${limit}',
+                //     'order': '-createdAt',
+                //     "count": "objectId"
+                // },
             },
             // defaultParams: { limit: 20, skip: 0 ,order:'-createdAt',where: {'product':{"$ne":null},"name":{"$ne":null,"$exists":true}}},
-            defaultParams: { limit: 10, skip: 0, order: '-createdAt' },
+            defaultParams: { skip: 1,
+            limit: 10,  order: '-createdAt' },
             pageField: 'skip',
             perPageField: 'limit',
             // interval: 3000,
-            silentPolling: true,
+            silentPolling: false,
             // --------------------------------------------------------------- 查询条件表单配置
             // 条件过滤表单
-            filterTogglable: true,
+            filterTogglable: false,
             filter: {
                 title: '查询条件',
                 className: classnames(FormClassName.label4x, FormClassName.input14x),
@@ -167,7 +178,7 @@ const schema = {
                     label: '操作',
                     width: 200,
                     toggled: true,
-                    buttons: [detailsDialog(), editDialog(), konvaDialog(), deleteDialog()]
+                    buttons: [detailsDialog(),  konvaDialog(), deleteDialog()]
                 }
             ],
             // --------------------------------------------------------------- 表格工具栏配置
@@ -179,14 +190,14 @@ const schema = {
                 // { align: 'right', type: 'columns-toggler' },
                 // { align: 'right', type: 'filter-toggler' },
                 // { align: 'right', type: 'drag-toggler' },
-                { align: 'right', type: 'export-csv' },
-                { align: 'right', type: 'export-excel' }
+                // { align: 'right', type: 'export-csv' },
+                // { align: 'right', type: 'export-excel' }
             ],
             footerToolbar: [
                 // {align: "right", type: "load-more"},
-                { align: 'right', type: 'pagination' },
-                { align: 'right', type: 'switch-per-page' },
-                { align: 'right', type: 'statistics' }
+                { align: 'left', type: 'switch-per-page' },
+                { align: 'left', type: 'pagination' },
+                { align: 'left', type: 'statistics' }
             ]
         }
     ]
