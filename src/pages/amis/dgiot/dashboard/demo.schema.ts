@@ -234,7 +234,7 @@ const schema = {
                                     className: 'v-middle'
                                 },
                                 {
-                                    align: 'right',
+                                    align: 'left',
                                     type: 'pagination'
                                 }
                             ],

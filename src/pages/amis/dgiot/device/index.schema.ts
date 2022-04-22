@@ -89,7 +89,10 @@ function deleteDialog() {
         actionType: 'ajax',
         api: {
             method: 'delete',
-            url: '/iotapi/amis_device?deviceid=${objectId}'
+            url: '/iotapi/classes/Device/${objectId}',
+            headers:{
+                sessionToken:localStorage.getItem("sessionToken")
+            }
         },
         confirmText: '您确认要删除该设备:${objectId}?'
     };

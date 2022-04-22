@@ -3,25 +3,67 @@ name: deploy
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
+# 设置上海时区
+env:
+  TZ: Asia/Shanghai
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
-
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.13.2 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v2.1.3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
       - name: install
         run: yarn install
-      - name: build
-        run: yarn build
-      - name: Deploy static to github pagese 🚀
+      - name: build:Compression
+        run: yarn build:Compression && cp README.md dist/ && cp CHANGELOG.md dist/
+      - name: Upload:Compression
+        uses: actions/upload-artifact@v2
+        with:
+          name: dgiot-amis-dashboard-Compression
+          path: dist
+      - name: Deploy static to github pagese
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist
+      - name: build
+        run: yarn build
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: dgiot-amis-dashboard
+          path: dist
+      - name: lighthouse 🚀
+        uses: treosh/lighthouse-ci-action@v2
+        with:
+          runs: 5
+          uploadArtifacts: true
+          configPath: './.github/workflows/setup/lighthouse-audit.json'
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@v1.0
+        with:
+          src: github/dgiot
+          dst: gitee/dgiiot
+          dst_key: ${{ secrets.PRIVATE_KEY }}
+          dst_token:  ${{ secrets.TOKEN }}
+          account_type: org
+          timeout: '1h'
+          debug: true
+          force_update: true
+          static_list: "dgiot-amis-dashboard"
+          black_list: "issue-generator,dgiot-dashboard"

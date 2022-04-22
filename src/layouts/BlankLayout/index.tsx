@@ -138,6 +138,7 @@ class BlankLayout extends React.Component<BlankLayoutProps, BlankLayoutState> {
                         type: 'form',
                         name: 'form',
                         title: '',
+                        // @ts-ignore
                         controls: [{ type: 'editor', language: 'json', name: 'code', label: false, disabled: false }],
                         actions: []
                     }
