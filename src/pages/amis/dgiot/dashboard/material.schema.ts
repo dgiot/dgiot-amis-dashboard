@@ -230,7 +230,7 @@ const schema = {
                               },
                               {
                                 type: 'operation',
-                                label: '操作',
+                                label: '关键工艺参数',
                                 buttons: [
                                   detailsDialog()
                                 ]

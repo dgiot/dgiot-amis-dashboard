@@ -12,7 +12,7 @@ const axiosSettings = {
     // 不经过cookie校验的路由,目前只写了首页
     routingWhitelist: ['blank/login', '/'],
     // 不经过cookie校验的接口,目前只写了登录接口
-    // http://47.118.69.187/swagger/
+    // http://dev.iotn2n.com/swagger/
     cookieWhitelist: ['login']
 };
 // HTTP 状态码错误说明
@@ -119,6 +119,7 @@ axiosInstance.interceptors.request.use(
 );
 // 全局拦截配置
 axiosInstance.interceptors.response.use(
+   
     (response) => response,
     (error) => {
         const { response } = error;
@@ -126,8 +127,10 @@ axiosInstance.interceptors.response.use(
             notification.error({ message: '服务器异常', description: '请求服务端异常' });
             return Promise.reject(error);
         }
+        
         if (response?.status === 401) {
             // TODO 跳转到登录页面
+            console.log('输出地址',location)
         }
         const {
             data: { message, validMessageList }

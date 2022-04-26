@@ -53,7 +53,7 @@ const settings: Settings = {
     openPage: "dgiot-amis-dashboard",
     proxy: {
       "/iotapi/": {
-        target: "http://47.118.69.187",
+        target: "http://dev.iotn2n.com",
         changeOrigin: true,
         pathRewrite: { "^": "" }
       },

@@ -161,6 +161,8 @@ const userLogin = (
                 connectMqtt(mqttConfig.url, mqttConfig.port, name, sessionToken, sessionToken, false);
 
                 Cookies.set('authorization', sessionToken);
+                console.log( "输出token",Cookies.get('authorization'));
+                
                 getCurrentUser(securityContext).then(() => {
                     window.appComponent
                         .refreshMenu(() => {
