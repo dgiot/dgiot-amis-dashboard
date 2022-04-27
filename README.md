@@ -37,7 +37,7 @@ dgiot-amis-dashboard 是基于百度的 [amis](https://github.com/baidu/amis) �
 
 ##### 3.效果预览
 
-线上预览地址: [https://dev.iotn2n.com/dgiot-amis-dashboard](https://dev.iotn2n.com/dgiot-amis-dashboard/) (dgiot_admin/dgiot_admin)
+线上预览地址: [http://121.5.171.21/dgiot-amis-dashboard](http://121.5.171.21/dgiot-amis-dashboard/) (dgiot_admin/dgiot_admin)
 
 #### 快速开始
 
