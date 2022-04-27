@@ -141,7 +141,7 @@ const routerConfigs: LayoutConfig[] = [
                 name: '总控台',
                 icon: 'HomeOutlined',
                 routes: [
-                    // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://dev.iotn2n.com" },
+                    // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "http://121.5.171.21" },
                     { path: '/index', name: '总控台', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/index.schema.ts' },
                     { path: '/demo', name: '生产报工', icon: 'HighlightOutlined', pagePath: '/amis/dgiot/dashboard/demo.schema.ts' },
                     { path: '/material', name: '物料消耗', icon: 'CopyOutlined', pagePath: '/amis/dgiot/dashboard/material.schema.ts' },
@@ -164,7 +164,7 @@ const routerConfigs: LayoutConfig[] = [
                 name: '设备云',
                 icon: 'CodepenCircleOutlined',
                 routes: [
-                    // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "https://dev.iotn2n.com" },
+                    // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "http://121.5.171.21" },
                     { path: '/index', name: '设备管理', icon: 'TableOutlined', pagePath: '/amis/dgiot/device/index.schema.ts' }
                     // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
                     // { path: "/03", name: "设备管理", icon: "BulbOutlined", pagePath: "/react/01demo.react.tsx" },

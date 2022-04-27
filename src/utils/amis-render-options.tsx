@@ -20,7 +20,7 @@ const axiosSettings = {
     // 不经过cookie校验的路由,目前只写了首页
     routingWhitelist: ['blank/login', '/'],
     // 不经过cookie校验的接口,目前只写了登录接口
-    // http://dev.iotn2n.com/swagger/
+    // http://121.5.171.21/swagger/
     cookieWhitelist: ['login']
 };
 const log = logger.getLogger('src/utils/amis-render-options.tsx');
@@ -87,8 +87,11 @@ axiosInstance.interceptors.request.use((request) => {
     console.log("queryParams",queryParams);
 
     if (!queryParams) return request;
+    //获取params查询条件
+    request.params =  queryParams
     // 将where[*] 的格式转换为object
-    const params = urlParseObject(request.url)
+    // const 
+    // request.params = urlParseObject(request.url)
     // 适配 - 分页查询参数
     const { orderDir, orderBy } = queryParams;
     if (orderDir && orderBy && /(asc|desc)/.test(orderDir.toString())) {
@@ -109,8 +112,8 @@ axiosInstance.interceptors.request.use((request) => {
     // request.headers['accept'] = 'application/json'
     // 修改请求参数
     log.info('请求主体 》》', request);
-    log.info('请求参数 》》', params,queryParams);
-    // request.url =  request.url?.split('?')[0]// `${request.url?.split('?')[0]}?${qs.stringify(queryParams)}`;
+    log.info('请求参数 》》',queryParams);
+    request.url =  request.url?.split('?')[0]// `${request.url?.split('?')[0]}?${qs.stringify(queryParams)}`;
     log.info('全局请求拦截[结束] request -> ', request);
     return request;
 });

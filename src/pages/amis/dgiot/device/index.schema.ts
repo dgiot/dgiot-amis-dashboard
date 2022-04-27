@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import { FormClassName } from '@/amis-types';
+import Cookies from 'js-cookie';
 import { enum2object } from '@/utils/enum';
 import { statusMapper } from '../../enum-data';
 // import { serverHost } from '../../server-api';
@@ -89,9 +90,9 @@ function deleteDialog() {
         actionType: 'ajax',
         api: {
             method: 'delete',
-            url: '/iotapi/classes/Device/${objectId}',
+            url: '/iotapi/amis/Device/${objectId}',
             headers:{
-                sessionToken:localStorage.getItem("sessionToken")
+                sessionToken:Cookies.get('authorization')
             }
         },
         confirmText: '您确认要删除该设备:${objectId}?'
@@ -131,11 +132,11 @@ const schema = {
             // --------------------------------------------------------------- 请求数据配置
             api: {
                 method: 'get',
-                url: `/iotapi/amis_device_list`,
-                "responseData": {
-                    "&": "$$",
-                    "items": "${results}"
-                  }
+                url: `/iotapi/amis/Device`,
+                // "responseData": {
+                //     "&": "$$",
+                //     "items": "${results}"
+                //   }
                 // data: {
                 //     "skip": '(${skip}-1)*${limit}',
                 //     "limit": '${limit}',

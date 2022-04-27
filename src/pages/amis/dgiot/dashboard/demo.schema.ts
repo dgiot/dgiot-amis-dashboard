@@ -2,50 +2,53 @@ import classnames from 'classnames';
 import { FormClassName } from '@/amis-types';
 // 详情对话框
 function detailsDialog() {
-  return {
-      type: 'button',
-      label: '查看',
-      level: 'info',
-      // size: 'xs',
-      actionType: 'dialog',
-      dialog: {
-          title: '查看关键工艺参数 ',
-          closeOnEsc: true,
-          actions: [{ type: 'button', label: '关闭', level: 'primary', actionType: 'close' }],
-          body: {
-              type: 'service',
-              api:'/usemock/keystep',
-              className: classnames(FormClassName.label5x),
-              body: [
-                {
-                  type: "table",
-                  title: "工艺参数",
-                  source: "$list",
-                  style:"hieght:150px",
-                  columns: [
+    return {
+        type: 'button',
+        label: '查看',
+        level: 'info',
+        // size: 'xs',
+        actionType: 'dialog',
+        dialog: {
+            title: '查看关键工艺参数 ',
+            closeOnEsc: true,
+            actions: [{ type: 'button', label: '关闭', level: 'primary', actionType: 'close' }],
+            body: {
+                type: 'service',
+                api: '/usemock/keystep',
+                className: classnames(FormClassName.label5x),
+                body: [
                     {
-                      name: "name",
-                      label: "参数名称",
-                      width:80
-                    },
-                    {
-                      name: "value",
-                      label: "参数值",
-                      width:80
+                        type: "table",
+                        title: "工艺参数",
+                        source: "$list",
+                        style: "hieght:150px",
+                        columns: [
+                            {
+                                name: "name",
+                                label: "参数名称",
+                                width: 80
+                            },
+                            {
+                                name: "value",
+                                label: "参数值",
+                                width: 80
+                            }
+                        ]
                     }
-                  ]
-                }
-              ]
-          }
-      }
-  };
+                ]
+            }
+        }
+    };
 }
 const whereData = {
-    skip: 0,
-    limit: 20,
-    keys: "objectId,title",
-    order: "-createdAt",
-    where: {dict:'bb7d4be836'}
+    // skip: 0,
+    // limit: 20,
+    keys: "objectId,title,data",
+    // order: "-createdAt",
+    where: {
+        dict: 'bb7d4be836'
+    }
+
 }
 const schema = {
     type: 'page',
@@ -104,7 +107,8 @@ const schema = {
                                             // source: "/usemock/getWuliao",
                                             source: {
                                                 method: "get",
-                                                url: "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                                                url: '/iotapi/amis/Dict',  //"/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                                                convertKeyToPath: true,
                                                 data: whereData,
                                                 // requestAdaptor:function (api:any){
                                                 //     return {
@@ -130,7 +134,7 @@ const schema = {
                                                 //     };
                                                 //   },
                                                 responseData: {
-                                                    options: "${results|pick:label~title,value~objectId}"
+                                                    options: "${items|pick:label~data.name,value~data.code}"
                                                 }
                                             },
                                             // deferApi: "/usemock/device/listAll",
@@ -150,10 +154,59 @@ const schema = {
                                             source: "/usemock/getgongyi",
                                             required: true
                                         },
+                                        // {
+                                        //     name: 'step',
+                                        //     type: 'chained-select',
+                                        //     label: '工艺步骤',
+                                        //     selectMode: "tree",
+                                        //     leftMode: "tree",
+                                        //     options: "${items}",
+                                        //     source: {
+                                        //         method: "get",
+                                        //         url: "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                                        //         data: {
+                                        //             skip: 0,
+                                        //             limit: 20,
+                                        //             // keys: "objectId,title",
+                                        //             order: "-createdAt",
+                                        //             where: { 
+                                        //                 "type": "technology",
+                                        //                 "dict":"${value|default:undefined}"
+                                                
+                                        //         }
+                                        //             // "myName": "${name|default:undefined}",
+                                        //             //    'where.dict': '15166',
+
+                                        //         },
+                                        //         responseData: {
+                                        //             options: "${items|pick:label~data.title,value~objectId}"
+                                        //         }
+
+                                        //     },
+                                        //     deferApi: "/amis/api/mock2/form/departUser?ref=${ref}&dep=${value}",
+                                        //     required: true
+                                        // },
                                         {
-                                            name: 'browser',
-                                            type: 'input-text',
+                                            name: 'product',
+                                            type: 'nested-select',
                                             label: '生产单元',
+                                            labelField:'label',
+                                            valueField:'objectId',
+                                            source: {
+                                                method: "get",
+                                                url:  '/iotapi/roletree', //'/iotapi/amis/_Role', 
+                                                data:{},
+                                                adaptor: function (payload:any, response:any, api:any) {
+                                                    return {
+                                                      ...payload,
+                                                      status:0,
+                                                       msg:'ok'
+                                                    };
+                                                  },
+                                                responseData: {
+                                                    options: "${rows|pick:label~label,value~objectId,children~children}"
+                                                }
+                                            },
                                             required: true
                                         },
                                         {
@@ -163,6 +216,7 @@ const schema = {
                                             placeholder: '起始时间',
                                             label: '起始时间',
                                             inputClassName: 'w-md',
+                                            format: "YYYY-MM-DD hh:mm:ss",
                                             required: true
                                         },
                                         {
@@ -172,6 +226,7 @@ const schema = {
                                             placeholder: '结束时间',
                                             label: '结束时间',
                                             inputClassName: 'w-md',
+                                            format: "YYYY-MM-DD hh:mm:ss",
                                             required: true
                                         },
                                         {
@@ -191,11 +246,11 @@ const schema = {
                             mode: 'table',
                             api: {
                                 url: '/usemock/device/listAll',
-                                data: {
-                                    // "skip": "${page}",
-                                    // "limit": "${perPage}",
-                                    // "count": "objectId"
-                                },
+                                // data: {
+                                //     // "skip": "${page}",
+                                //     // "limit": "${perPage}",
+                                //     // "count": "objectId"
+                                // },
                                 // "adaptor": "return {\n    ...payload,\n    count:payload.count,\n results:payload.results \n}",
 
                                 responseData: {
@@ -220,21 +275,24 @@ const schema = {
                                         type: 'input-datetime',
                                         minDate: '${starttime}',
                                         placeholder: '起始时间',
-                                        inputClassName: 'w-md'
+                                        inputClassName: 'w-md',
+                                        format: "YYYY-MM-DD hh:mm:ss"
                                     },
                                     {
                                         name: 'endtime',
                                         type: 'input-datetime',
                                         maxDate: '${endtime}',
                                         placeholder: '结束时间',
-                                        inputClassName: 'w-md'
+                                        inputClassName: 'w-md',
+                                        format: "YYYY-MM-DD hh:mm:ss"
                                     },
-                                    {
-                                        type: 'button',
-                                        label: '查询',
-                                        level: 'primary',
-                                        actionType: 'submit'
-                                    }
+                                    // {
+                                    //     type: 'button',
+                                    //     label: '查询',
+                                    //     level: 'primary',
+                                    //     actionType: 'submit'
+                                    // },
+                                    { label: '查询', level: 'primary', type: 'submit', size: 'md' },
                                 ],
                                 title: '',
                                 submitText: ''
@@ -275,9 +333,9 @@ const schema = {
                                 {
                                     type: 'operation',
                                     label: '关键工艺参数',
-                                    width:100,
+                                    width: 100,
                                     buttons: [
-                                      detailsDialog()
+                                        detailsDialog()
                                     ]
                                 },
                                 {
@@ -305,8 +363,8 @@ const schema = {
                                                                     limit: 20,
                                                                     keys: "objectId,title",
                                                                     order: "-createdAt",
-                                                                //    'where.dict': '15166',
-                                                                    
+                                                                    //    'where.dict': '15166',
+
                                                                 },
                                                                 // requestAdaptor:function (api:any){
                                                                 //     return {
@@ -384,39 +442,40 @@ const schema = {
                                                         },
                                                         {
                                                             mode: 'inline',
-                                                            name: 'title',
+                                                            name: 'title1',
                                                             type: 'static',
                                                             label: '关键工艺参数',
+                                                            value: '',
                                                             labelClassName: 'text-lg p-md font-bold'
                                                         },
                                                         {
                                                             type: "crud",
-                                                            api:  "/usemock/keystep", //"/usemock/device/listAll",
+                                                            api: "/usemock/keystep", //"/usemock/device/listAll",
                                                             syncLocation: false,
                                                             columns: [
-                                                              
-                                                              {
-                                                                name: "name",
-                                                                label: "参数名称"
-                                                              },
-                                                              {
-                                                                name: "value",
-                                                                label: "参数值"
-                                                              },
-                                                              {
-                                                                type: "operation",
-                                                                label: "操作",
-                                                                buttons: [
-                                                                  {
-                                                                    label: "删除",
-                                                                    type: "button",
-                                                                    actionType: "ajax",
-                                                                    level: "danger",
-                                                                    confirmText: "确认要删除？",
-                                                                    api: "delete:/amis/api/mock2/sample/${id}"
-                                                                  }
-                                                                ]
-                                                              }
+
+                                                                {
+                                                                    name: "name",
+                                                                    label: "参数名称"
+                                                                },
+                                                                {
+                                                                    name: "value",
+                                                                    label: "参数值"
+                                                                },
+                                                                {
+                                                                    type: "operation",
+                                                                    label: "操作",
+                                                                    buttons: [
+                                                                        {
+                                                                            label: "删除",
+                                                                            type: "button",
+                                                                            actionType: "ajax",
+                                                                            level: "danger",
+                                                                            confirmText: "确认要删除？",
+                                                                            api: "delete:/amis/api/mock2/sample/${id}"
+                                                                        }
+                                                                    ]
+                                                                }
                                                             ]
                                                         }
                                                     ],

@@ -1,6 +1,6 @@
 /**
  * @description Dlink 协议
- * @docs-api https://dev.iotn2n.com/dgiot_swagger/#/Protocol/get_protocol
+ * @docs-api http://121.5.171.21/dgiot_swagger/#/Protocol/get_protocol
  */
 /**
  * @description /protocol 获取协议列表
