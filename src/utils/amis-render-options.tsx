@@ -42,53 +42,60 @@ export interface FetcherConfig {
  * @description
  */
 function urlParseObject(url) {
-  
+
     // 如果没有where[] 直接返回
     if (url.indexOf('where[') == -1) {
-        console.log("这是url",url);
+        console.log("这是url", url);
         return url
     }
     else {
         var obj = {};
         var whereArr = {}
         var arr = url.split('?').pop().split('#').shift().split('&');
-        
+
         for (var i = arr.length - 1; i >= 0; i--) {
             var k = arr[i].split('=')[0];
             var val = arr[i].split('=')[1];
             // console.log(k,val);
             obj[k] = val;
         }
-        console.log("分割结果",obj);
+        console.log("分割结果", obj);
         // 将where[]的url查询参数替换
-        for(let k in obj){
-            if(k.indexOf('where[')>=0){
+        for (let k in obj) {
+            if (k.indexOf('where[') >= 0) {
                 // 分割key
                 // whereArr[k] = obj[k]
-                var key =  k.split('[')[1].split(']')[0];
+                var key = k.split('[')[1].split(']')[0];
                 whereArr[key] = obj[k]
-                console.log("key",key);
+                console.log("key", key);
                 // 将原有where[*]删除掉
                 delete obj[k]
 
             }
         }
-        console.log("这是where条件",whereArr);
+        console.log("这是where条件", whereArr);
         obj['where'] = whereArr
-        console.log("这是地址",obj)
+        console.log("这是地址", obj)
         return obj
     }
 }
 const axiosInstance = axiosCreate();
 // Dgiot Amis- 请求适配
 axiosInstance.interceptors.request.use((request) => {
-    log.info('全局请求拦截[开始] request -> ', request);
-    const queryParams = getUrlParam(undefined, request.url);
-    console.log("queryParams",queryParams);
+    const { url = '' } = request
+    log.info('全局请求拦截[开始] request -> ', request, url);
+    // let queryParams = url
+    // if (url.indexOf('?') < 0) queryParams = url
+    // else
+    const queryParams = getUrlParam(undefined, url);
+    console.log("queryParams", queryParams);
 
     if (!queryParams) return request;
     //获取params查询条件
-    request.params =  queryParams
+    if (queryParams.skip && queryParams.limit)
+        queryParams.skip = (parseInt(queryParams.skip) - 1) * queryParams.limit
+    console.log("queryParams", queryParams);
+    request.params = queryParams
     // 将where[*] 的格式转换为object
     // const 
     // request.params = urlParseObject(request.url)
@@ -112,8 +119,8 @@ axiosInstance.interceptors.request.use((request) => {
     // request.headers['accept'] = 'application/json'
     // 修改请求参数
     log.info('请求主体 》》', request);
-    log.info('请求参数 》》',queryParams);
-    request.url =  request.url?.split('?')[0]// `${request.url?.split('?')[0]}?${qs.stringify(queryParams)}`;
+    log.info('请求参数 》》', queryParams);
+    request.url = request.url?.split('?')[0]// `${request.url?.split('?')[0]}?${qs.stringify(queryParams)}`;
     log.info('全局请求拦截[结束] request -> ', request);
     return request;
 });

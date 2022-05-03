@@ -98,490 +98,233 @@
 // }
 
 const schema = {
-    type: 'page',
-    name: 'page',
-    title: '',
-    toolbar: [],
-    body: [
+    "title": "15616",
+    data:{
+        "objectId":window.location
+        },
+    "body": [
         {
-            type: 'crud',
-            name: 'crud',
-            perPageAvailable: [10, 20, 50, 100],
-            syncLocation: false,
-            multiple: true,
-            keepItemSelectionOnPageChange: false,
-            draggable: true,
-            hideQuickSaveBtn: false,
-            autoJumpToTopOnPagerChange: false,
-            affixHeader: false,
-            syncResponse2Query: true,
-            api: {
-                method: 'get',
-                url: '/!/amis-api/curd-page@curdQuery'
-            },
-            defaultParams: {
-                pageNo: 1,
-                pageSize: 10
-            },
-            pageField: 'pageNo',
-            perPageField: 'pageSize',
-            filterTogglable: true,
-            filter: {
-                title: '查询条件',
-                className: 'form-label-4x form-input-14x',
-                trimValues: true,
-                submitOnChange: false,
-                controls: [
-                    {
-                        type: 'text',
-                        label: '订单编号',
-                        name: 'orderCode',
-                        placeholder: '通过关键字搜索',
-                        clearable: true,
-                        size: 'md'
-                    },
-                    {
-                        type: 'text',
-                        label: '手机号',
-                        name: 'shipMobile',
-                        placeholder: '通过关键字搜索',
-                        clearable: true,
-                        size: 'md'
-                    },
-                    {
-                        type: 'select',
-                        label: '订单状态',
-                        name: 'status',
-                        placeholder: '通过关键字搜索',
-                        clearable: true,
-                        size: 'md',
-                        options: [
-                            {
-                                label: '待审核',
-                                value: '-3'
-                            },
-                            {
-                                label: '待支付',
-                                value: '-2'
-                            },
-                            {
-                                label: '待处理',
-                                value: '-1'
-                            },
-                            {
-                                label: '已接单',
-                                value: '0'
-                            },
-                            {
-                                label: '已出库',
-                                value: '1'
-                            },
-                            {
-                                label: '已签收',
-                                value: '2'
-                            },
-                            {
-                                label: '已驳回',
-                                value: '3'
-                            },
-                            {
-                                label: '拒收',
-                                value: '4'
-                            },
-                            {
-                                label: '已取消',
-                                value: '5'
-                            }
-                        ],
-                        submitOnChange: true
-                    },
-                    {
-                        type: 'html',
-                        html: '<br />'
-                    },
-                    {
-                        type: 'select',
-                        label: '支付状态',
-                        name: 'payType',
-                        placeholder: '请选择',
-                        clearable: true,
-                        size: 'md',
-                        options: [
-                            {
-                                label: '未支付',
-                                value: '1'
-                            },
-                            {
-                                label: '已支付',
-                                value: '2'
-                            }
-                        ],
-                        submitOnChange: true
-                    },
-                    {
-                        type: 'datetime',
-                        label: '开始时间',
-                        name: 'createAtStart',
-                        placeholder: '选择时间',
-                        format: 'x',
-                        clearable: true,
-                        size: 'md'
-                    },
-                    {
-                        type: 'datetime',
-                        label: '结束时间',
-                        name: 'createAtEnd',
-                        placeholder: '选择时间',
-                        format: 'x',
-                        clearable: true,
-                        size: 'md'
-                    },
-                    {
-                        label: '查询',
-                        level: 'primary',
-                        type: 'submit',
-                        size: 'md'
-                    },
-                    {
-                        label: '重置',
-                        type: 'reset'
-                    }
-                ]
-            },
-            primaryField: 'orderId',
-            columns: [
+            "type": "grid",
+            "columns": [
                 {
-                    name: 'orderCode',
-                    label: '订单编号',
-                    sortable: true
-                },
-                {
-                    name: 'status',
-                    label: '订单状态',
-                    sortable: true,
-                    type: 'mapping',
-                    map: {
-                        '0': '已接单',
-                        '1': '已出库',
-                        '2': '已签收',
-                        '3': '已驳回',
-                        '4': '拒收',
-                        '5': '已取消',
-                        '-3': '待审核',
-                        '-2': '待支付',
-                        '-1': '待处理'
-                    }
-                },
-                {
-                    name: 'shipName',
-                    label: '收货人姓名',
-                    sortable: true
-                },
-                {
-                    name: 'shipMobile',
-                    label: '手机号',
-                    sortable: true
-                },
-                {
-                    name: 'orderType',
-                    label: '订单类型',
-                    sortable: true,
-                    type: 'mapping',
-                    map: {
-                        '1': 'O2O',
-                        '2': 'B2C'
-                    }
-                },
-                {
-                    name: 'payStatus',
-                    label: '支付方式',
-                    sortable: true,
-                    type: 'mapping',
-                    map: {
-                        '0': '现金支付',
-                        '1': '微信支付',
-                        '2': '支付宝',
-                        '3': '三方平台线上支付',
-                        '4': '小程序',
-                        '5': '保险支付',
-                        '45': '微信小程序+保险',
-                        '-1': '暂无'
-                    }
-                },
-                {
-                    name: 'payType',
-                    label: '支付状态',
-                    sortable: true,
-                    type: 'mapping',
-                    map: {
-                        '1': '未支付',
-                        '2': '已支付'
-                    }
-                },
-                {
-                    name: 'payTime',
-                    label: '支付时间',
-                    sortable: true
-                },
-                {
-                    name: 'payAmount',
-                    label: '支付金额',
-                    sortable: true
-                },
-                {
-                    name: 'createAt',
-                    label: '下单时间',
-                    sortable: true
-                },
-                {
-                    type: 'operation',
-                    label: '操作',
-                    width: 120,
-                    toggled: true,
-                    buttons: [
+                    "type": "panel",
+                    "title": "本地配置示例 支持交互${objectId}",
+                    "name": "chart-local",
+                    "body": [
                         {
-                            type: 'button',
-                            label: '查看',
-                            level: 'info',
-                            size: 'xs',
-                            actionType: 'dialog',
-                            dialog: {
-                                title: '查看订单 - ${orderCode}',
-                                closeOnEsc: true,
-                                actions: [
+                            "type": "chart",
+                            "config": {
+                                "title": {
+                                    "text": "极坐标双数值轴"
+                                },
+                                "legend": {
+                                    "data": [
+                                        "line"
+                                    ]
+                                },
+                                "polar": {
+                                    "center": [
+                                        "50%",
+                                        "54%"
+                                    ]
+                                },
+                                "tooltip": {
+                                    "trigger": "axis",
+                                    "axisPointer": {
+                                        "type": "cross"
+                                    }
+                                },
+                                "angleAxis": {
+                                    "type": "value",
+                                    "startAngle": 0
+                                },
+                                "radiusAxis": {
+                                    "min": 0
+                                },
+                                "series": [
                                     {
-                                        type: 'button',
-                                        label: '关闭',
-                                        level: 'primary',
-                                        actionType: 'close'
+                                        "coordinateSystem": "polar",
+                                        "name": "line",
+                                        "type": "line",
+                                        "showSymbol": false,
+                                        "data": [
+                                            [
+                                                0,
+                                                0
+                                            ],
+                                            [
+                                                0.03487823687206265,
+                                                1
+                                            ],
+                                            [
+                                                0.06958655048003272,
+                                                2
+                                            ],
+                                            [
+                                                0.10395584540887964,
+                                                3
+                                            ],
+                                            [
+                                                0.13781867790849958,
+                                                4
+                                            ],
+                                            [
+                                                0.17101007166283433,
+                                                5
+                                            ],
+                                            [
+                                                0.2033683215379001,
+                                                6
+                                            ],
+                                            [
+                                                0.2347357813929454,
+                                                7
+                                            ],
+                                            [
+                                                0.26495963211660245,
+                                                8
+                                            ],
+                                            [
+                                                0.2938926261462365,
+                                                9
+                                            ],
+                                            [
+                                                0.3213938048432697,
+                                                10
+                                            ]
+                                        ]
                                     }
                                 ],
-                                body: {
-                                    type: 'form',
-                                    className: 'form-label-5x',
-                                    initApi: {
-                                        method: 'get',
-                                        url: '/!/amis-api/curd-page@getDetail?orderId=$orderId'
-                                    },
-                                    controls: [
-                                        {
-                                            type: 'static',
-                                            name: 'orderId',
-                                            label: '订单ID'
-                                        },
-                                        {
-                                            type: 'static',
-                                            name: 'orderCode',
-                                            label: '订单编号'
-                                        },
-                                        {
-                                            type: 'mapping',
-                                            name: 'status',
-                                            label: '订单状态',
-                                            map: {
-                                                '0': '已接单',
-                                                '1': '已出库',
-                                                '2': '已签收',
-                                                '3': '已驳回',
-                                                '4': '拒收',
-                                                '5': '已取消',
-                                                '-3': '待审核',
-                                                '-2': '待支付',
-                                                '-1': '待处理'
-                                            }
-                                        },
-                                        {
-                                            type: 'static',
-                                            name: 'shipName',
-                                            label: '收货人'
-                                        },
-                                        {
-                                            type: 'static',
-                                            name: 'shipMobile',
-                                            label: '手机号'
-                                        },
-                                        {
-                                            type: 'static',
-                                            name: 'shipAddr',
-                                            label: '地址'
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            type: 'button',
-                            label: '编辑',
-                            level: 'info',
-                            size: 'xs',
-                            actionType: 'dialog',
-                            dialog: {
-                                size: 'xs',
-                                title: '编辑',
-                                data: {
-                                    '&': '$$',
-                                    shipName: '${shipName}',
-                                    shipName2: '${shipName}'
-                                },
-                                body: {
-                                    type: 'form',
-                                    className: 'flex-form-label-5x',
-                                    api: {
-                                        method: 'put',
-                                        url: '/!/amis-api/curd-page@mockUpdate?orderId=$orderId'
-                                    },
-                                    controls: [
-                                        {
-                                            type: 'text',
-                                            name: 'orderId',
-                                            label: '订单ID'
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'orderCode',
-                                            label: '订单编号'
-                                        },
-                                        {
-                                            type: 'select',
-                                            name: 'status',
-                                            label: '订单状态',
-                                            options: [
-                                                {
-                                                    label: '待审核',
-                                                    value: '-3'
-                                                },
-                                                {
-                                                    label: '待支付',
-                                                    value: '-2'
-                                                },
-                                                {
-                                                    label: '待处理',
-                                                    value: '-1'
-                                                },
-                                                {
-                                                    label: '已接单',
-                                                    value: '0'
-                                                },
-                                                {
-                                                    label: '已出库',
-                                                    value: '1'
-                                                },
-                                                {
-                                                    label: '已签收',
-                                                    value: '2'
-                                                },
-                                                {
-                                                    label: '已驳回',
-                                                    value: '3'
-                                                },
-                                                {
-                                                    label: '拒收',
-                                                    value: '4'
-                                                },
-                                                {
-                                                    label: '已取消',
-                                                    value: '5'
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'shipName',
-                                            label: '收货人'
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'shipName2',
-                                            label: '收货人2'
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'shipMobile',
-                                            label: '手机号'
-                                        },
-                                        {
-                                            type: 'textarea',
-                                            name: 'shipAddr',
-                                            label: '地址'
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            type: 'button',
-                            label: '删除',
-                            level: 'danger',
-                            size: 'xs',
-                            actionType: 'ajax',
-                            api: {
-                                method: 'delete',
-                                url: '/!/amis-api/curd-page@mockDelete?orderId=$orderId'
+                                "animationDuration": 2000
                             },
-                            confirmText: '您确认要删除订单:${orderCode}?'
+                            "clickAction": {
+                                "actionType": "dialog",
+                                "dialog": {
+                                    "title": "详情",
+                                    "body": [
+                                        {
+                                            "type": "tpl",
+                                            "tpl": "<span>当前选中值 ${value|json}<span>"
+                                        },
+                                        {
+                                            "type": "chart",
+                                            "api": "/amis/api/mock2/chart/chart1"
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     ]
+                },
+                {
+                    "type": "panel",
+                    "title": "远程图表示例(返回值带function)",
+                    "className":'fw-b',
+                    "name": "chart-remote",
+                    "body": [
+                        // {
+                        //     "type": "chart",
+                        //     "api": "/amis/api/mock2/chart/chart1"
+                        // }
+                        {
+                            "type": "chart",
+                            "config": {
+                              "xAxis": {
+                                "data": [
+                                  "Mon",
+                                  "Tue",
+                                  "Wed",
+                                  "Thu",
+                                  "Fri",
+                                  "Sat",
+                                  "Sun"
+                                ],
+                                "type": "category"
+                              },
+                              "yAxis": {
+                                "type": "value"
+                              },
+                              "series": [
+                                {
+                                  "data": [
+                                    820,
+                                    932,
+                                    901,
+                                    934,
+                                    1290,
+                                    1330,
+                                    1320
+                                  ],
+                                  "type": "bar"
+                                }
+                              ]
+                            },
+                            "replaceChartOption": true
+                          }
+                    ]
                 }
-            ],
-            bulkActions: [
+            ]
+        },
+        {
+            "type": "panel",
+            "title": "Form+chart组合",
+            "body": [
                 {
-                    label: '批量操作1'
+                    "type": "form",
+                    "title": "过滤条件",
+                    "target": "chart1,chart2",
+                    "submitOnInit": true,
+                    "className": "m-b",
+                    "wrapWithPanel": false,
+                    "mode": "inline",
+                    "body": [
+                        {
+                            "type": "input-date",
+                            "label": "开始日期",
+                            "name": "starttime",
+                            "value": "-8days",
+                            "maxDate": "${endtime}"
+                        },
+                        {
+                            "type": "input-date",
+                            "label": "结束日期",
+                            "name": "endtime",
+                            "value": "-1days",
+                            "minDate": "${starttime}"
+                        },
+                        {
+                            "type": "input-text",
+                            "label": "条件",
+                            "name": "name",
+                            "addOn": {
+                                "type": "submit",
+                                "label": "搜索",
+                                "level": "primary"
+                            }
+                        }
+                    ],
+                    "actions": []
                 },
                 {
-                    label: '批量操作2'
-                }
-            ],
-            headerToolbar: [
-                {
-                    align: 'left',
-                    type: 'button',
-                    label: '主操作',
-                    level: 'primary',
-                    size: 'sm'
+                    "type": "divider"
                 },
                 {
-                    align: 'left',
-                    type: 'button',
-                    label: '次操作',
-                    size: 'sm'
-                },
-                {
-                    align: 'left',
-                    type: 'bulkActions'
-                },
-                {
-                    align: 'right',
-                    type: 'columns-toggler'
-                },
-                {
-                    align: 'right',
-                    type: 'filter-toggler'
-                },
-                {
-                    align: 'right',
-                    type: 'drag-toggler'
-                },
-                {
-                    align: 'right',
-                    type: 'export-csv'
-                },
-                {
-                    align: 'right',
-                    type: 'export-excel'
-                }
-            ],
-            footerToolbar: [
-                {
-                    align: 'right',
-                    type: 'pagination'
-                },
-                {
-                    align: 'right',
-                    type: 'switch-per-page'
-                },
-                {
-                    align: 'right',
-                    type: 'statistics'
+                    "type": "grid",
+                    "className": "m-t-lg",
+                    "columns": [
+                        {
+                            "type": "chart",
+                            "name": "chart1",
+                            "initFetch": false,
+                            "api": "/amis/api/mock2/chart/chart?name=$name&starttime=${starttime}&endtime=${endtime}"
+                        },
+                        {
+                            "type": "chart",
+                            "name": "chart2",
+                            "initFetch": false,
+                            "api": "/amis/api/mock2/chart/chart2?name=$name"
+                        }
+                    ]
                 }
             ]
         }

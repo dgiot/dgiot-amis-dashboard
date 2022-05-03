@@ -91,8 +91,8 @@ function deleteDialog() {
         api: {
             method: 'delete',
             url: '/iotapi/amis/Device/${objectId}',
-            headers:{
-                sessionToken:Cookies.get('authorization')
+            headers: {
+                sessionToken: Cookies.get('authorization')
             }
         },
         confirmText: '您确认要删除该设备:${objectId}?'
@@ -104,8 +104,13 @@ function konvaDialog() {
         label: '组态',
         type: 'button',
         level: 'secondary',
-        actionType: 'link',
-        link: '../dgiot-amis-dashboard/#/dashboard/konva/${devaddr}/${product.objectId}'
+        actionType: 'link', //link
+        link:'../dgiot-amis-dashboard/#/dashboard/index',
+        params:{
+            "objectId": "jack",
+            "jon": "player"
+        }
+        // link: '../dgiot-amis-dashboard/#/dashboard/konva/${devaddr}/${product.objectId}'
     };
 }
 
@@ -119,7 +124,7 @@ const schema = {
             type: 'crud',
             name: 'crud',
             // --------------------------------------------------------------- 常规配置
-            perPageAvailable: [10, 20, 50, 100],
+            perPageAvailable: [5,10, 20, 50, 100],
             syncLocation: false,
             multiple: false,
             keepItemSelectionOnPageChange: false,
@@ -133,20 +138,45 @@ const schema = {
             api: {
                 method: 'get',
                 url: `/iotapi/amis/Device`,
+                responseData: {
+                    "$":"$$",
+                    count: '${total}',
+                    rows: '${items}'
+                },
+                requestAdaptor: function (api: any) {
+                    console.log("这是设备",api);
+                    
+                    return {
+                        ...api,
+                        query: {
+                            // ...api.query, // 获取暴露的 api 中的 data 变量
+                            skip: (api.query.skip-1)*api.query.limit,
+                              foo: 'bar' // 新添加数据
+                           
+                        }
+                    };
+                },
                 // "responseData": {
                 //     "&": "$$",
                 //     "items": "${results}"
                 //   }
                 // data: {
-                //     "skip": '(${skip}-1)*${limit}',
-                //     "limit": '${limit}',
-                //     'order': '-createdAt',
-                //     "count": "objectId"
+                //     "skip": `(${skip}-1)*${limit}`,
+                //     // "limit": '${limit}',
+                //     // 'order': '-createdAt',
+                //     // "count": "objectId"
                 // },
             },
             // defaultParams: { limit: 20, skip: 0 ,order:'-createdAt',where: {'product':{"$ne":null},"name":{"$ne":null,"$exists":true}}},
-            defaultParams: { skip: 1,
-            limit: 10,  order: '-createdAt' },
+            defaultParams: {
+                skip: 1,
+                limit: 10,
+                // order: -createdAt
+                count: 'objectId',
+                order: '-createdAt',
+                where: {"product":{"$ne":"d5f1b2dcd8"}}
+                // where: {"product":""}
+            },
             pageField: 'skip',
             perPageField: 'limit',
             // interval: 3000,
@@ -182,7 +212,7 @@ const schema = {
                     label: '操作',
                     width: 200,
                     toggled: true,
-                    buttons: [detailsDialog(),  konvaDialog(), deleteDialog()]
+                    buttons: [detailsDialog(), konvaDialog(), deleteDialog()]
                 }
             ],
             // --------------------------------------------------------------- 表格工具栏配置

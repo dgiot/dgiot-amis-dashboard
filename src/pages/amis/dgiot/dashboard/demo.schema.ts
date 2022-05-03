@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import Cookies from 'js-cookie';
 import { FormClassName } from '@/amis-types';
 // 详情对话框
 function detailsDialog() {
@@ -80,7 +81,7 @@ const schema = {
                             className: 'm-b-sm',
                             dialog: {
                                 closeOnEsc: true,
-                                api: '/usemock/device/listAll',
+                                // api: '/usemock/device/listAll',
                                 actions: [
                                     {
                                         label: "取消",
@@ -95,12 +96,65 @@ const schema = {
                                     },
                                 ],
                                 body: {
-                                    api: 'post:/amis/api/mock2/sample',
+                                    api: {
+                                        method: 'post',
+                                        url: '/iotapi/amis/Device',
+
+                                        headers: {
+                                            sessionToken: Cookies.get('authorization')
+                                        },
+                                        requestAdaptor: function (api: any) {
+                                            return {
+                                                ...api,
+                                                data: {
+                                                    ...api.data, // 获取暴露的 api 中的 data 变量
+                                                    //   foo: 'bar' // 新添加数据
+                                                    "ACL": {
+                                                        "role:开发者": {
+                                                            "read": true,
+                                                            "write": true
+                                                        }
+                                                    },
+                                                    "detail": {},
+                                                    "devaddr": `工厂_devaddr_${new Date().getTime()}`,
+                                                    "isEnable": true,
+                                                    "name": `工厂_name_${new Date().getTime()}`,
+                                                    "profile": {},
+                                                    "route": {},
+                                                    product: {
+                                                        className: "Product",
+                                                        objectId: "d5f1b2dcd8",
+                                                        __type: "Pointer"
+                                                    }
+                                                }
+                                            };
+                                        },
+                                        // requestAdaptor: function (api: any) {
+                                        //     return {
+                                        //         ...api.data,
+                                        //         data: {
+                                        //             content: { ...api.data.content },
+                                        //             "ACL": {
+                                        //                 "*": {
+                                        //                     "read": true,
+                                        //                     "write": false
+                                        //                 }
+                                        //             },
+                                        //             "detail": {},
+                                        //             "devaddr": `工厂_devaddr_${new Date().getTime()}`,
+                                        //             "isEnable": true,
+                                        //             "name": `工厂_name_${new Date().getTime()}`,
+                                        //             "profile": {},
+                                        //             "route": {},
+                                        //         }
+                                        //     }
+                                        // },
+                                    },
                                     // "closeOnEsc": true,
                                     // mode: "normal",
                                     body: [
                                         {
-                                            name: 'engine',
+                                            name: 'content.material',
                                             type: 'select',
                                             label: '产出物料',
                                             searchable: true,
@@ -110,48 +164,50 @@ const schema = {
                                                 url: '/iotapi/amis/Dict',  //"/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
                                                 convertKeyToPath: true,
                                                 data: whereData,
-                                                // requestAdaptor:function (api:any){
-                                                //     return {
-                                                //         ...api.data,
-                                                //         data:{
-                                                //             ...api.data,
-                                                //             where:{
-                                                //                 "type":"metaData"
-                                                //                 }
-                                                //         }
-                                                //     }
-                                                // },
-                                                // adaptor:"return {\n    ...payload,\n status: 0 \n,msg:'ok'}",
-                                                // Adaptor: function (payload:any, response:any, api:any) {
-                                                //     return {
-                                                //       ...payload,
-                                                //        data: {
-                                                //         // ...payload, // 获取暴露的 api 中的 data 变量
-                                                //         where:{
-                                                //             "type":"metaData"
-                                                //         }
-                                                //        }
-                                                //     };
-                                                //   },
+
                                                 responseData: {
-                                                    options: "${items|pick:label~data.name,value~data.code}"
+                                                    options: "${items|pick:label~data.name,value~data}"
                                                 }
                                             },
                                             // deferApi: "/usemock/device/listAll",
                                             required: true
                                         },
                                         {
-                                            name: 'code',
+                                            name: 'content.code',
                                             type: 'input-text',
                                             label: '唯一码',
                                             required: true
                                         },
                                         {
-                                            name: 'step',
+                                            name: 'content.step',
                                             type: 'nested-select',
                                             label: '工艺步骤',
+                                            labelField: 'label',
+                                            valueField: 'value',
                                             selectMode: "tree",
-                                            source: "/usemock/getgongyi",
+                                            // source: "/usemock/getgongyi",
+                                            source: {
+                                                method: "post",
+                                                url: '/iotapi/tree',  //"/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                                                headers: {
+                                                    sessionToken: Cookies.get('authorization')
+                                                },
+                                                data: {
+                                                    class: "Device",
+                                                    filter: "{\"keys\":[\"parentId\",\"name\"]}",
+                                                    parent: "parentId"
+                                                },
+                                                adaptor: function (payload: any, response: any, api: any) {
+                                                    return {
+                                                        ...payload,
+                                                        status: 0,
+                                                        msg: 'ok'
+                                                    };
+                                                },
+                                                responseData: {
+                                                    options: "${rows|pick:label~objectId,value~objectId,children~children}"
+                                                }
+                                            },
                                             required: true
                                         },
                                         // {
@@ -172,7 +228,7 @@ const schema = {
                                         //             where: { 
                                         //                 "type": "technology",
                                         //                 "dict":"${value|default:undefined}"
-                                                
+
                                         //         }
                                         //             // "myName": "${name|default:undefined}",
                                         //             //    'where.dict': '15166',
@@ -187,52 +243,55 @@ const schema = {
                                         //     required: true
                                         // },
                                         {
-                                            name: 'product',
+                                            name: 'content.product',
                                             type: 'nested-select',
                                             label: '生产单元',
-                                            labelField:'label',
-                                            valueField:'objectId',
+                                            labelField: 'label',
+                                            valueField: 'label',
                                             source: {
                                                 method: "get",
-                                                url:  '/iotapi/roletree', //'/iotapi/amis/_Role', 
-                                                data:{},
-                                                adaptor: function (payload:any, response:any, api:any) {
+                                                url: '/iotapi/roletree', //'/iotapi/amis/_Role', 
+                                                data: {},
+                                                adaptor: function (payload: any, response: any, api: any) {
                                                     return {
-                                                      ...payload,
-                                                      status:0,
-                                                       msg:'ok'
+                                                        ...payload,
+                                                        status: 0,
+                                                        msg: 'ok'
                                                     };
-                                                  },
+                                                },
                                                 responseData: {
-                                                    options: "${rows|pick:label~label,value~objectId,children~children}"
+                                                    options: "${rows|pick:label~label,value~label,children~children}"
                                                 }
                                             },
                                             required: true
                                         },
                                         {
-                                            name: 'starttime',
+                                            name: 'content.starttime',
                                             type: 'input-datetime',
                                             minDate: '${starttime}',
                                             placeholder: '起始时间',
                                             label: '起始时间',
                                             inputClassName: 'w-md',
+                                            value: "now",
                                             format: "YYYY-MM-DD hh:mm:ss",
                                             required: true
                                         },
                                         {
-                                            name: 'endtime',
+                                            name: 'content.endtime',
                                             type: 'input-datetime',
                                             maxDate: '${endtime}',
                                             placeholder: '结束时间',
                                             label: '结束时间',
                                             inputClassName: 'w-md',
+                                            value: "+1day",
                                             format: "YYYY-MM-DD hh:mm:ss",
                                             required: true
                                         },
                                         {
-                                            name: 'number',
+                                            name: 'content.number',
                                             type: 'input-text',
                                             label: '数量',
+                                            value: '1',
                                             required: true
                                         },
                                     ],
@@ -245,7 +304,8 @@ const schema = {
                             type: 'crud',
                             mode: 'table',
                             api: {
-                                url: '/usemock/device/listAll',
+                                method: 'get',
+                                url: `/iotapi/amis/Device`,
                                 // data: {
                                 //     // "skip": "${page}",
                                 //     // "limit": "${perPage}",
@@ -254,13 +314,21 @@ const schema = {
                                 // "adaptor": "return {\n    ...payload,\n    count:payload.count,\n results:payload.results \n}",
 
                                 responseData: {
-                                    // "$":"$$",
-                                    count: '${count}',
-                                    rows: '${list}'
+                                    "$": "$$",
+                                    count: '${total}',
+                                    rows: '${items}'
                                 }
                             },
+                            defaultParams: {
+                                skip: 1,
+                                limit: 10, order: '-createdAt',
+                                count: 'objectId',
+                                where: { "product": "d5f1b2dcd8" }
+                            },
                             // "source":"${results}",
-                            perPage: 10,
+                            // perPage: 10,
+                            pageField: 'skip',
+                            perPageField: 'limit',
                             filter: {
                                 body: [
                                     {
@@ -299,195 +367,243 @@ const schema = {
                             },
                             columns: [
                                 {
-                                    name: 'id',
-                                    label: '物料'
+                                    name: 'content.material.name',
+                                    label: '物料',
                                 },
                                 {
-                                    name: 'title',
-                                    label: '唯一码'
+                                    name: 'content.code',
+                                    label: '唯一码',
+
+
                                 },
                                 {
-                                    name: 'ntype',
+                                    name: 'content.starttime',
                                     label: '生产开始时间'
                                 },
                                 {
-                                    name: 'createtime',
-                                    label: '生产开始时间'
-                                },
-                                {
-                                    name: 'endtime',
+                                    name: 'content.endtime',
                                     label: '生产结束时间'
                                 },
                                 {
-                                    name: 'step',
+                                    name: 'content.step',
                                     label: '工艺步骤'
                                 },
                                 {
-                                    name: 'danyuan',
+                                    name: 'content.product',
                                     label: '生产单元'
                                 },
                                 {
-                                    name: 'num',
+                                    name: 'content.number',
                                     label: '数量'
                                 },
-                                {
-                                    type: 'operation',
-                                    label: '关键工艺参数',
-                                    width: 100,
-                                    buttons: [
-                                        detailsDialog()
-                                    ]
-                                },
+                                // {
+                                //     type: 'operation',
+                                //     label: '关键工艺参数',
+                                //     width: 100,
+                                //     buttons: [
+                                //         detailsDialog()
+                                //     ]
+                                // },
                                 {
                                     type: 'operation',
                                     label: '操作',
                                     buttons: [
                                         {
                                             type: 'button',
-                                            label: '编辑',
+                                            label: '查看',
                                             drawer: {
                                                 body: {
-                                                    api: 'post:/amis/api/mock2/sample/${id}',
+
+                                                    // api: {
+                                                    //     method: 'put',
+                                                    //     url: '/iotapi/amis/Device/${objectId}',
+
+                                                    //     headers: {
+                                                    //         sessionToken: Cookies.get('authorization')
+                                                    //     },
+                                                    //     requestAdaptor: function (api: any) {
+                                                    //         return {
+                                                    //             ...api,
+                                                    //             data: {
+                                                    //                 ...api.data, // 获取暴露的 api 中的 data 变量
+                                                    //                 //   foo: 'bar' // 新添加数据
+                                                    //                 "ACL": {
+                                                    //                     "role:开发者": {
+                                                    //                         "read": true,
+                                                    //                         "write": true
+                                                    //                     }
+                                                    //                 },
+                                                    //                 "detail": {},
+                                                    //                 "devaddr": `工厂_devaddr_${new Date().getTime()}`,
+                                                    //                 "isEnable": true,
+                                                    //                 "name": `工厂_name_${new Date().getTime()}`,
+                                                    //                 "profile": {},
+                                                    //                 "route": {},
+                                                    //                 product: {
+                                                    //                     className: "Product",
+                                                    //                     objectId: "d5f1b2dcd8",
+                                                    //                     __type: "Pointer"
+                                                    //                 }
+                                                    //             }
+                                                    //         };
+                                                    //     },
+                                                    // },
+
                                                     body: [
                                                         {
-                                                            name: 'engine',
-                                                            type: 'select',
+                                                            name: 'content.material.name',
+                                                            type: 'input-text', //'select',
                                                             label: '产出物料',
                                                             searchable: true,
-                                                            // source: "/usemock/getWuliao",
-                                                            source: {
-                                                                method: "get",
-                                                                url: "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-                                                                data: {
-                                                                    skip: 0,
-                                                                    limit: 20,
-                                                                    keys: "objectId,title",
-                                                                    order: "-createdAt",
-                                                                    //    'where.dict': '15166',
+                                                            extractValue: true,
 
-                                                                },
-                                                                // requestAdaptor:function (api:any){
-                                                                //     return {
-                                                                //         ...api.data,
-                                                                //         data:{
-                                                                //             ...api.data,
-                                                                //             where:{
-                                                                //                 "type":"metaData"
-                                                                //                 }
-                                                                //         }
-                                                                //     }
-                                                                // },
-                                                                // adaptor:"return {\n    ...payload,\n status: 0 \n,msg:'ok'}",
-                                                                // Adaptor: function (payload:any, response:any, api:any) {
-                                                                //     return {
-                                                                //       ...payload,
-                                                                //        data: {
-                                                                //         // ...payload, // 获取暴露的 api 中的 data 变量
-                                                                //         where:{
-                                                                //             "type":"metaData"
-                                                                //         }
-                                                                //        }
-                                                                //     };
-                                                                //   },
-                                                                responseData: {
-                                                                    options: "${results|pick:label~title,value~objectId}"
-                                                                }
-                                                            },
+                                                            // source: {
+                                                            //     method: "get",
+                                                            //     url: "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                                                            //     data: whereData,
+
+                                                            //     // requestAdaptor:function (api:any){
+                                                            //     //     return {
+                                                            //     //         ...api.data,
+                                                            //     //         data:{
+                                                            //     //             ...api.data,
+                                                            //     //             where:{
+                                                            //     //                 "type":"metaData"
+                                                            //     //                 }
+                                                            //     //         }
+                                                            //     //     }
+                                                            //     // },
+
+                                                            //     // Adaptor: function (payload:any, response:any, api:any) {
+                                                            //     //     return {
+                                                            //     //       ...payload,
+                                                            //     //        data: {
+                                                            //     //         // ...payload, // 获取暴露的 api 中的 data 变量
+                                                            //     //         where:{
+                                                            //     //             "type":"metaData"
+                                                            //     //         }
+                                                            //     //        }
+                                                            //     //     };
+                                                            //     //   },
+                                                            //     responseData: {
+                                                            //         options: "${items|pick:label~data.name,value~data}"
+                                                            //     }
+                                                            // },
                                                             // deferApi: "/usemock/device/listAll",
                                                             required: true
                                                         },
                                                         {
-                                                            name: 'code',
+                                                            name: 'content.code',
                                                             type: 'input-text',
                                                             label: '唯一码',
-                                                            required: true
+                                                            // required: true,
+                                                            disabledOn: "${false}"
                                                         },
                                                         {
-                                                            name: 'step',
-                                                            type: 'nested-select',
+                                                            name: 'content.step',
+                                                            type: 'input-text', //nested-select
                                                             label: '工艺步骤',
+                                                            value: "content.step",
+                                                            labelField: 'label',
+                                                            valueField: 'label',
                                                             selectMode: "tree",
-                                                            source: "/usemock/getgongyi",
+                                                            // source: "/usemock/getgongyi",
                                                             required: true
                                                         },
                                                         {
-                                                            name: 'browser',
+                                                            name: 'content.product',
                                                             type: 'input-text',
+                                                            // value: "${content.material}",
                                                             label: '生产单元',
                                                             required: true
                                                         },
                                                         {
-                                                            name: 'starttime',
+                                                            name: 'content.starttime',
                                                             type: 'input-datetime',
                                                             minDate: '${starttime}',
                                                             placeholder: '起始时间',
                                                             label: '起始时间',
+                                                            format: "YYYY-MM-DD hh:mm:ss",
                                                             inputClassName: 'w-md',
                                                             required: true
                                                         },
                                                         {
-                                                            name: 'endtime',
+                                                            name: 'content.endtime',
                                                             type: 'input-datetime',
                                                             maxDate: '${endtime}',
                                                             placeholder: '结束时间',
                                                             label: '结束时间',
+                                                            format: "YYYY-MM-DD hh:mm:ss",
                                                             inputClassName: 'w-md',
                                                             required: true
                                                         },
                                                         {
-                                                            name: 'number',
+                                                            name: 'content.number',
                                                             type: 'input-text',
                                                             label: '数量',
                                                             required: true
                                                         },
-                                                        {
-                                                            mode: 'inline',
-                                                            name: 'title1',
-                                                            type: 'static',
-                                                            label: '关键工艺参数',
-                                                            value: '',
-                                                            labelClassName: 'text-lg p-md font-bold'
-                                                        },
-                                                        {
-                                                            type: "crud",
-                                                            api: "/usemock/keystep", //"/usemock/device/listAll",
-                                                            syncLocation: false,
-                                                            columns: [
+                                                        // {
+                                                        //     mode: 'inline',
+                                                        //     name: 'title1',
+                                                        //     type: 'static',
+                                                        //     label: '关键工艺参数',
+                                                        //     value: '',
+                                                        //     labelClassName: 'text-lg p-md font-bold'
+                                                        // },
+                                                        // {
+                                                        //     type: "crud",
+                                                        //     api: "/usemock/keystep", //"/usemock/device/listAll",
+                                                        //     syncLocation: false,
+                                                        //     columns: [
 
-                                                                {
-                                                                    name: "name",
-                                                                    label: "参数名称"
-                                                                },
-                                                                {
-                                                                    name: "value",
-                                                                    label: "参数值"
-                                                                },
-                                                                {
-                                                                    type: "operation",
-                                                                    label: "操作",
-                                                                    buttons: [
-                                                                        {
-                                                                            label: "删除",
-                                                                            type: "button",
-                                                                            actionType: "ajax",
-                                                                            level: "danger",
-                                                                            confirmText: "确认要删除？",
-                                                                            api: "delete:/amis/api/mock2/sample/${id}"
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
+                                                        //         {
+                                                        //             name: "name",
+                                                        //             label: "参数名称"
+                                                        //         },
+                                                        //         {
+                                                        //             name: "value",
+                                                        //             label: "参数值"
+                                                        //         },
+                                                        //         {
+                                                        //             type: "operation",
+                                                        //             label: "操作",
+                                                        //             buttons: [
+                                                        //                 {
+                                                        //                     label: "删除",
+                                                        //                     type: "button",
+                                                        //                     actionType: "ajax",
+                                                        //                     level: "danger",
+                                                        //                     confirmText: "确认要删除？",
+                                                        //                     api: {
+                                                        //                         method: 'delete',
+                                                        //                         url: '/iotapi/amis/Device/${objectId}',
+                                                        //                         headers:{
+                                                        //                             sessionToken:Cookies.get('authorization')
+                                                        //                         }
+                                                        //                     },
+                                                        //                     // api: "delete:/amis/api/mock2/sample/${id}"
+                                                        //                 }
+                                                        //             ]
+                                                        //         }
+                                                        //     ]
+                                                        // }
                                                     ],
                                                     type: 'form',
-                                                    initApi: '/amis/api/mock2/sample/${id}'
+                                                    // initApi: '/iotapi/amis/Device/${objectId}'
                                                 },
-                                                title: '新增表单'
+                                                title: '查看'
                                             },
                                             actionType: 'drawer'
                                         },
                                         {
-                                            api: 'delete:/amis/api/mock2/sample/${id}',
+                                            api: {
+                                                method: 'delete',
+                                                url: '/iotapi/amis/Device/${objectId}',
+                                                headers: {
+                                                    sessionToken: Cookies.get('authorization')
+                                                }
+                                            },
                                             type: 'button',
                                             label: '删除',
                                             level: 'danger',
@@ -499,15 +615,16 @@ const schema = {
                             ],
                             headerToolbar: [],
                             footerToolbar: [
-                                {
-                                    type: 'tpl',
-                                    tpl: '定制内容示例：当前有 ${count} 条数据。',
-                                    className: 'v-middle'
-                                },
+                                // {
+                                //     type: 'tpl',
+                                //     tpl: '定制内容示例：当前有 ${count} 条数据。',
+                                //     className: 'v-middle'
+                                // },
                                 {
                                     align: 'left',
                                     type: 'pagination'
-                                }
+                                },
+                                { align: 'left', type: 'statistics' }
                             ],
                             alwaysShowPagination: true,
                             syncLocation: false
@@ -521,9 +638,9 @@ const schema = {
         backgroundColor: ''
     },
     // "initApi": {
-    //   "url": "iotapi/classes/Device/parse_objectid",
+    //   "url": "iotapi/classes/Device/${parse_objectid}",
     //   "method": "get",
-    //   "adaptor": "return {\r\n  \"status\":0,\r\n  \"msg\":\"\",\r\n  \"data\":response.data.basedata\r\n  }",
+    //   "adaptor": "return {\r\n  \"status\":0,\r\n  \"msg\":\"\",\r\n  \"data\":response.data.content\r\n  }",
     //   "headers": {
     //     "store": "localStorage",
     //     "dgiotReplace": "parse_objectid"
