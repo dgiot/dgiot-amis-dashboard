@@ -89,12 +89,21 @@ axiosInstance.interceptors.request.use((request) => {
     // else
     const queryParams = getUrlParam(undefined, url);
     console.log("queryParams", queryParams);
+    let token = Cookies.get('authorization') || ''
+    if (token) {
+        request.headers["sessionToken"] = token
+        // console.log("token11111",token);
+    }
 
     if (!queryParams) return request;
     //获取params查询条件
     if (queryParams.skip && queryParams.limit)
         queryParams.skip = (parseInt(queryParams.skip) - 1) * queryParams.limit
     console.log("queryParams", queryParams);
+    if (queryParams.where?.devaddr?.$regex == "" || queryParams.where?.devaddr?.$regex == undefined) {
+        delete  queryParams.where.devaddr
+        // console.log("这是修改过的api",api);
+    }
     request.params = queryParams
     // 将where[*] 的格式转换为object
     // const 

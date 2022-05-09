@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { FormClassName } from '@/amis-types';
+//生产报工
 // 详情对话框
 function detailsDialog() {
     return {
@@ -302,7 +303,19 @@ const schema = {
                                                 method: "get",
                                                 url: '/iotapi/amis/Dict',  //"/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
                                                 convertKeyToPath: true,
-                                                data: whereData,
+                                                data:  {
+                                                  // skip: 0,
+                                                  // limit: 20,
+                                                  keys: "objectId,title,data",
+                                                  // order: "-createdAt",
+                                                  where: {
+                                                    // parent:{
+                                                      dict: '9470abe2e7'
+                                                    // }
+                                                
+                                                  }
+                                              
+                                              },
 
                                                 responseData: {
                                                     options: "${items|pick:label~data.name,value~data}"
@@ -625,43 +638,7 @@ const schema = {
                                             label: '查看',
                                             drawer: {
                                                 body: {
-
-                                                    // api: {
-                                                    //     method: 'put',
-                                                    //     url: '/iotapi/amis/Device/${objectId}',
-
-                                                    //     headers: {
-                                                    //         sessionToken: Cookies.get('authorization')
-                                                    //     },
-                                                    //     requestAdaptor: function (api: any) {
-                                                    //         return {
-                                                    //             ...api,
-                                                    //             data: {
-                                                    //                 ...api.data, // 获取暴露的 api 中的 data 变量
-                                                    //                 //   foo: 'bar' // 新添加数据
-                                                    //                 "ACL": {
-                                                    //                     "role:开发者": {
-                                                    //                         "read": true,
-                                                    //                         "write": true
-                                                    //                     }
-                                                    //                 },
-                                                    //                 "detail": {},
-                                                    //                 "devaddr": `工厂_devaddr_${new Date().getTime()}`,
-                                                    //                 "isEnable": true,
-                                                    //                 "name": `工厂_name_${new Date().getTime()}`,
-                                                    //                 "profile": {},
-                                                    //                 "route": {},
-                                                    //                 product: {
-                                                    //                     className: "Product",
-                                                    //                     objectId: "d5f1b2dcd8",
-                                                    //                     __type: "Pointer"
-                                                    //                 }
-                                                    //             }
-                                                    //         };
-                                                    //     },
-                                                    // },
-
-                                                    body: [
+                                                     body: [
                                                         {
                                                             name: 'content.material.name',
                                                             type: 'input-text', //'select',
