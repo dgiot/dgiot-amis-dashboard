@@ -4,7 +4,7 @@
 // * @LastEditTime: 2021-08-23 18:12:12
 // * @Description: dgiot doc api
 // * @FilePath: src\api\Article\index.js
-// * @DocumentLink: http://prod.iotn2n.com/swagger/#/Article
+// * @DocumentLink: http://121.5.171.21/swagger/#/Article
 import { create_object, del_object, get_object, query_object, update_object } from '@/api/Parse';
 import moment from 'moment';
 import _ from 'lodash';

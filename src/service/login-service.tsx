@@ -5,6 +5,7 @@ import { logger } from '@/utils/logger';
 import { LayoutConfig, LayoutType, routerHistory } from '@/utils/router';
 import { UserSecurityContext } from '@/utils/security';
 import { connectMqtt } from '@/utils/mqtt/mqttClient1';
+import { WindowsFilled } from '@ant-design/icons';
 const log = logger.getLogger('src/utils/login-service.ts');
 
 /**
@@ -141,7 +142,7 @@ const userLogin = (
             headers: { accept: 'application/json', 'Content-Type': 'text/plain', platform: 'dgiot-amis-dashboard' }
         })
         .then((securityContext) => {
-            const { sessionToken, nick, message: msg, name } = securityContext;
+            const { roles,objectId,sessionToken, nick, message: msg, name } = securityContext;
             if (!sessionToken || !nick) {
                 message.error(msg || '用户名/密码错误').then();
                 return;
@@ -161,17 +162,34 @@ const userLogin = (
                 connectMqtt(mqttConfig.url, mqttConfig.port, name, sessionToken, sessionToken, false);
 
                 Cookies.set('authorization', sessionToken);
-                console.log( "输出token",Cookies.get('authorization'));
+                localStorage.setItem('roleId', objectId); //当前登录用户身份id
+                localStorage.setItem('nick',nick)
+                console.log('角色',roles);
                 
+                roles.forEach((element:any) => {
+                    if(element.name!=="admin"){
+                        localStorage.setItem("departmentId",element.objectId)
+                        localStorage.setItem("deptname",element.name)
+                        // Cookies.set('departmentId', element.objectId); //当前登录用户身份id
+                        // console.log( 'department111111111111111', localStorage.getItem("departmentId"))
+                        return 
+                    }
+                });
+               
+                // console.log( "输出token",Cookies.get('authorization'));
                 getCurrentUser(securityContext).then(() => {
                     window.appComponent
                         .refreshMenu(() => {
-                            if (defaultPath) routerHistory.push({ path: defaultPath });
+                            if (defaultPath) {
+                                routerHistory.push({ path: defaultPath });
+                                location.reload()
+                            }
                         })
                         .then();
                 });
             } else if (defaultPath) {
                 routerHistory.push({ path: defaultPath });
+                // location.reload()
             }
         })
         .finally(onFinally);

@@ -57,6 +57,11 @@ const settings: Settings = {
         changeOrigin: true,
         pathRewrite: { "^": "" }
       },
+      "/fileload/": {
+        target: "http://121.5.171.21:1250",
+        changeOrigin: true,
+        pathRewrite: { "^/fileload/": "/" }
+      },
       "/usemock/": {
         target: "https://datav.usemock.com",
         changeOrigin: true,

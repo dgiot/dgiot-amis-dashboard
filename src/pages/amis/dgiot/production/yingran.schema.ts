@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { FormClassName } from '@/amis-types';
-import { FormatTime, getTime, getRoleId } from '@/utils/utils'
+import { FormatTime, getTime, getRoleId, getUserName } from '@/utils/utils'
 // import { getTreeParents, getRoleId, getDepartmentId, getnowTime } from '@/utils/utils'
 //165b80ab1e 生产工单
 // 详情对话框
@@ -54,7 +54,7 @@ function distDialog() {
     actionType: 'dialog',
     dialog: {
       // size: 'xs',
-      title: '报工任务',
+      title: '指派任务',
       // data: {
       //     '&': '$$',
       // },
@@ -84,7 +84,28 @@ function distDialog() {
               "write": true
             }
             let ctt = api.data.content
-            ctt.pinfo = {}
+            let nowpeople = ''
+            for (let o in ctt.pinfo) {
+              if (o!='people') {
+                nowpeople= nowpeople +ctt.pinfo[o]
+                // console.log('替换成功');
+              }
+            }
+            ctt.pinfo.people = nowpeople
+            //保存添加审核员意见信息
+            // let opinions = ctt.opinions || []  //获取审核意见内容
+            // let item = {
+            //   name: getUserName(),
+            //   desc: api.data.objection,
+            //   employee: api.data.dept.label
+            // }
+            // opinions.push(item)
+            // console.log('opinions', opinions);
+            // ctt.opinions = opinions
+            ctt.yrinfo.opinion = api.data.objection
+            ctt.yrinfo.isaudit = api.data.isaudit
+
+            //添加派发人员信息
             ctt.personel = api.data.dept
             let list = ctt.personlist
             list.push(api.data.dept)
@@ -116,24 +137,28 @@ function distDialog() {
         controls: [
           { type: 'static', name: 'content', label: '唯一码', visibleOn: "false" },
           { name: 'ACL', type: 'input-text', visibleOn: "false", label: '权限' },
-          // {
-          //     type: 'select', 
-          //     name: 'devaddr',
-          //      label: '派发人员', 
-          //      searchable: true,
-          //     // source: "/usemock/getWuliao",
-          //     source: {
-          //         method: "get",
-          //         url: '/iotapi/amis/Dict',  //"/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-          //         convertKeyToPath: true,
-          //         data: whereData,
-
-          //         responseData: {
-          //             options: "${items | pick:label~data.name, value~data
-          // } "
-          // }
-          //     },
-          // },
+          {
+            "label": "审核",
+            "type": "select",
+            "name": "isaudit",
+            "options": [
+              {
+                "label": "合格",
+                "value": "合格"
+              },
+              {
+                "label": "不合格",
+                "value": "不合格"
+              }
+            ],
+            required: true
+          },
+          {
+            label: '审核意见',
+            type: 'input-text',
+            name: 'objection',
+            value: '合格通过'
+          },
           {
             name: 'dept',
             type: 'nested-select',
@@ -169,7 +194,7 @@ function distDialog() {
         ]
       }
     },
-    visibleOn: "content.isstart=='未开始'"
+    visibleOn: "content.yrinfo.isaudit=='待审核'"
   };
 }
 
@@ -260,58 +285,12 @@ function created() {
             name: 'content.proplan',
             type: 'input-text', //'select',
             label: '生产计划',
-            // searchable: true,
-            // extractValue: true,
-            // source: {
-            //     method: "get",
-            //     url: "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-            //     data: whereData,
-
-            //     // requestAdaptor:function (api:any){
-            //     //     return {
-            //     //         ...api.data,
-            //     //         data:{
-            //     //             ...api.data,
-            //     //             where:{
-            //     //                 "type":"metaData"
-            //     //                 }
-            //     //         }
-            //     //     }
-            //     // },
-
-            //     // Adaptor: function (payload:any, response:any, api:any) {
-            //     //     return {
-            //     //       ...payload,
-            //     //        data: {
-            //     //         // ...payload, // 获取暴露的 api 中的 data 变量
-            //     //         where:{
-            //     //             "type":"metaData"
-            //     //         }
-            //     //        }
-            //     //     };
-            //     //   },
-            //     responseData: {
-            //         options: "${items|pick:label~data.name,value~data}"
-            //     }
-            // },
-            // deferApi: "/usemock/device/listAll",
             required: true
           },
-          // {
-          //   name: 'content.code',
-          //   type: 'input-text',
-          //   label: '唯一码',
-          //   // required: true,
-          //   disabledOn: "${false}"
-          // },
           {
             name: 'content.people',
             type: 'input-text', //nested-select
             label: '负责人',
-            // labelField: 'label',
-            // valueField: 'label',
-            // selectMode: "tree",
-            // source: "/usemock/getgongyi",
             required: true
           },
           {
@@ -453,7 +432,7 @@ const schema = {
               mode: 'inline',
               name: 'title',
               type: 'static',
-              label: '生产工单管理',
+              label: '印染管理',
               labelClassName: 'text-lg p-md font-bold'
             }
           ],
@@ -468,19 +447,6 @@ const schema = {
               api: {
                 method: 'get',
                 url: `/iotapi/classes/Device`,
-                // data: {
-                //     // "skip": "${page}",
-                //     // "limit": "${perPage}",
-                //     // "count": "objectId"
-                // },
-                // "adaptor": "return {\n    ...payload,\n    count:payload.count,\n results:payload.results \n}",
-
-                //   responseData: {
-                //     "$": "$$",
-                //     count: '${total}',
-                //     rows: '${items}'
-                //   }
-                // },
                 adaptor: function (payload: any, response: any, api: any) {
                   console.log("payloadtree", payload);
                   // let options =  getuserList(payload.data.rows)
@@ -506,7 +472,8 @@ const schema = {
                 count: 'objectId',
                 where: {
                   "product": "d5f1b2dcd8", // "d5f1b2dcd8", 
-                  "detail.payout": "已派发"
+                  "detail.payout": "已派发",
+                  "content.c_process": '印染车间'
                 }
               },
               // "source":"${results}",
@@ -523,20 +490,26 @@ const schema = {
                     placeholder: '按工单编号查询'
                   },
                   // {
-                  //   name: 'where.content.compnum.$gt',
-                  //   type: 'input-text',
-                  //   // minDate: '${starttime}',
-                  //   // placeholder: '起始时间',
+                  //   name: 'starttime',
+                  //   type: 'input-datetime',
+                  //   minDate: '${starttime}',
+                  //   placeholder: '起始时间',
                   //   inputClassName: 'w-md',
-                  //   // format: "YYYY-MM-DD hh:mm:ss"
+                  //   format: "YYYY-MM-DD hh:mm:ss"
                   // },
                   // {
-                  //   name: 'where.content.number.$lt',
-                  //   type: 'input-text',
-                  //   // maxDate: '${endtime}',
-                  //   // placeholder: '结束时间',
+                  //   name: 'endtime',
+                  //   type: 'input-datetime',
+                  //   maxDate: '${endtime}',
+                  //   placeholder: '结束时间',
                   //   inputClassName: 'w-md',
-                  //   // format: "YYYY-MM-DD hh:mm:ss"
+                  //   format: "YYYY-MM-DD hh:mm:ss"
+                  // },
+                  // {
+                  //     type: 'button',
+                  //     label: '查询',
+                  //     level: 'primary',
+                  //     actionType: 'submit'
                   // },
                   { label: '查询', level: 'primary', type: 'submit', size: 'md' },
                   { label: "重置", type: "reset", size: 'md' }
@@ -552,29 +525,21 @@ const schema = {
                   label: '工单编号',
                 },
                 {
-                  name: 'content.personlist[1].label',
+                  name: 'content.personel.label',
                   label: '负责人',
                 },
-                // {
-                //   name: 'content.personel.label',
-                //   label: '当前人员',
-                // },
                 {
                   name: 'content.product',
                   label: '产品名称'
                 },
                 {
-                  name: 'content.step',
-                  label: '工艺步骤'
-                },
-                {
                   name: 'content.number',
                   label: '生产计划数',
                 },
-                // {
-                //   name: 'content.compnum',
-                //   label: '完成数量'
-                // },
+                {
+                  name: 'content.yrinfo.compnum',
+                  label: '完成数量'
+                },
                 // {
                 //   name: 'content.out_number',
                 //   label: '产出数量'
@@ -583,21 +548,35 @@ const schema = {
                 //   name: 'content.fail_number',
                 //   label: '不合格数量'
                 // },
-                // {
-                //   name: 'content.isstart',
-                //   label: '工单生产状态'
-                // },
+                {
+                  name: 'content.yrinfo.isstart',
+                  label: '工单生产状态'
+                },
                 // {
                 //   name: 'content.out_sche',
                 //   label: '生产进度'
                 // },
                 {
-                  name: 'content.starttime',
-                  label: '计划开工时间'
+                  name: 'content.yrinfo.taskstart',
+                  label: '任务开工时间'
                 },
                 {
-                  name: 'content.endtime',
-                  label: '计划完工时间'
+                  name: 'content.yrinfo.taskend',
+                  label: '任务完工时间'
+                },
+                {
+                  name: 'content.yrinfo.mhour',
+                  label: '工长'
+                },
+                {
+                  name: "content.yrinfo.isaudit",
+                  label: "审核状态",
+                  type: "mapping",
+                  map: {
+                    "待审核": "<span class='label label-info'>待审核</span>",
+                    "合格": "<span class='label label-success'>合格</span>",
+                    "不合格": "<span class='label label-danger'>不合格</span>",
+                  }
                 },
                 {
                   type: 'operation',
@@ -640,16 +619,6 @@ const schema = {
                               type: 'static',
                               // value: "${content.material}",
                               label: '计划生产数量',
-                              inputClassName: "font-bold"
-                            },
-                            {
-                              mode: 'inline',
-                              // name: 'title1',
-                              type: 'static',
-                              label: '水刺任务情况',
-                              value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.isstart"
                             },
                             {
                               name: 'content.compnum',
@@ -664,124 +633,15 @@ const schema = {
                               label: '任务状态',
                             },
                             {
-                              name: 'content.taskstart',
+                              name: 'content.starttime',
                               type: 'static',
-                              label: '实际开始时间',
-                              visibleOn: "content.taskstart"
+                              label: '任务开始时间',
                             },
                             {
-                              name: 'content.taskend',
+                              name: 'content.endtime',
                               type: 'static',
-                              label: '实际结束时间',
-                              visibleOn: "content.taskend"
+                              label: '任务结束时间',
                             },
-                            {
-                              name: 'content.isaudit',
-                              type: 'static',
-                              label: '审核',
-                              visibleOn: "content.isaudit"
-                            },
-                            {
-                              name: 'content.opinion',
-                              type: 'static',
-                              label: '审核意见',
-                              visibleOn: "content.opinion"
-                            },
-                            {
-                              mode: 'inline',
-                              // name: 'title1',
-                              type: 'static',
-                              label: '印染任务情况',
-                              value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.yrinfo.isstart"
-                            },
-                            {
-                              name: 'content.yrinfo.compnum',
-                              type: 'static',
-                              // value: "${content.material}",
-                              label: '实际生产数量',
-                              visibleOn: "content.yrinfo.compnum"
-                            },
-                            {
-                              name: 'content.yrinfo.isstart',
-                              type: 'static',
-                              // value: "${content.material}",
-                              label: '任务状态',
-                              visibleOn: "content.yrinfo.isstart"
-                            },
-                            {
-                              name: 'content.yrinfo.taskstart',
-                              type: 'static',
-                              label: '实际开始时间',
-                              visibleOn: "content.yrinfo.taskstart"
-                            },
-                            {
-                              name: 'content.yrinfo.taskend',
-                              type: 'static',
-                              label: '实际结束时间',
-                              visibleOn: "content.yrinfo.taskend"
-                            },
-                            {
-                              name: 'content.yrinfo.isaudit',
-                              type: 'static',
-                              label: '审核',
-                              visibleOn: "content.yrinfo.isaudit"
-                            },
-                            {
-                              name: 'content.yrinfo.opinion',
-                              type: 'static',
-                              label: '审核意见',
-                              visibleOn: "content.yrinfo.opinion"
-                            },
-                            {
-                              mode: 'inline',
-                              // name: 'title1',
-                              type: 'static',
-                              label: '分切任务情况',
-                              value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.fqinfo.isstart"
-                            },
-                            {
-                              name: 'content.fqinfo.compnum',
-                              type: 'static',
-                              // value: "${content.material}",
-                              label: '实际生产数量',
-                              visibleOn: "content.fqinfo.compnum"
-                            },
-                            {
-                              name: 'content.fqinfo.isstart',
-                              type: 'static',
-                              // value: "${content.material}",
-                              label: '任务状态',
-                              visibleOn: "content.fqinfo.isstart"
-                            },
-                            {
-                              name: 'content.fqinfo.taskstart',
-                              type: 'static',
-                              label: '实际开始时间',
-                              visibleOn: "content.fqinfo.taskstart"
-                            },
-                            {
-                              name: 'content.fqinfo.taskend',
-                              type: 'static',
-                              label: '实际结束时间',
-                              visibleOn: "content.fqinfo.taskend"
-                            },
-                            {
-                              name: 'content.fqinfo.isaudit',
-                              type: 'static',
-                              label: '审核',
-                              visibleOn: "content.fqinfo.isaudit"
-                            },
-                            {
-                              name: 'content.fqinfo.opinion',
-                              type: 'static',
-                              label: '审核意见',
-                              visibleOn: "content.fqinfo.opinion"
-                            },
-                            
                             // {
                             //     mode: 'inline',
                             //     name: 'title1',
@@ -849,33 +709,6 @@ const schema = {
                       actionType: 'ajax',
                       confirmText: '确认要删除？'
                     },
-                    {
-                      api: {
-                        method: 'put',
-                        url: '/iotapi/amis/Device/${objectId}',
-                        headers: {
-                          sessionToken: Cookies.get('authorization')
-                        },
-                        requestAdaptor: function (api: any) {
-                          console.log('111',api);
-                          let ctt = api.data.content
-                          ctt.fast = "加急"
-                          return {
-                            ...api,
-                            data:{
-                              // ACL: api.data.ACL,
-                              content: ctt,
-                              // createdAt: new Date()
-                            }
-                          }
-                        }
-                      },
-                      type: 'button',
-                      label: '加急',
-                      level: 'warning',
-                      actionType: 'ajax',
-                      confirmText: '是否确认优先处理?'
-                    },
                     distDialog(),
                     {
                       type: 'button',
@@ -884,97 +717,20 @@ const schema = {
                       drawer: {
                         body: {
                           body: [
+
                             {
                               mode: 'inline',
                               name: 'title1',
                               type: 'static',
-                              label: '水刺任务完成详情',
+                              label: '任务完成详情',
                               value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.taskList.length>0"
-                            },
-                            {
-                              type: "crud",
-                              source: '${content.taskList}',
-                              // api: "/usemock/keystep", //"/usemock/device/listAll",
-                              syncLocation: false,
-                              visibleOn: "content.taskList.length>0",
-                              headerToolbar: [
-                                "export-excel",
-                              ],
-                              columns: [
-                                {
-                                  name: "dingdan",
-                                  label: "订单号",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "pname",
-                                  label: "品名",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "date",
-                                  label: "日期",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "long",
-                                  label: "长",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "width",
-                                  label: "宽",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "height",
-                                  label: "高",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "kweight",
-                                  label: "克重",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "mweight",
-                                  label: "毛重",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "mweight",
-                                  label: "接头数",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "check",
-                                  label: "品检",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "fenqie",
-                                  label: "分切",
-                                  groupName: "${devaddr}"
-                                },
-                              ]
-                            },
-                            {
-                              mode: 'inline',
-                              name: 'title1',
-                              type: 'static',
-                              label: '印染任务完成详情',
-                              value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.yrinfo.taskList.length>0",
+                              labelClassName: 'text-lg p-md font-bold'
                             },
                             {
                               type: "crud",
                               source: '${content.yrinfo.taskList}',
                               // api: "/usemock/keystep", //"/usemock/device/listAll",
                               syncLocation: false,
-                              visibleOn: "content.yrinfo.taskList.length>0",
                               headerToolbar: [
                                 "export-excel",
                               ],
@@ -991,47 +747,11 @@ const schema = {
                                 },
                                 {
                                   name: "desc",
-                                  label: "信息",
+                                  label: "录入信息",
                                   groupName: "${devaddr}"
-                                },
+                                }
                               ]
-                            },
-                            {
-                              mode: 'inline',
-                              name: 'title1',
-                              type: 'static',
-                              label: '分切任务完成详情',
-                              value: '',
-                              labelClassName: 'text-lg p-md font-bold',
-                              visibleOn: "content.fqinfo.taskList.length>0",
-                            },
-                            {
-                              type: "crud",
-                              source: '${content.fqinfo.taskList}',
-                              // api: "/usemock/keystep", //"/usemock/device/listAll",
-                              syncLocation: false,
-                              visibleOn: "content.fqinfo.taskList.length>0",
-                              headerToolbar: [
-                                "export-excel",
-                              ],
-                              columns: [
-                                {
-                                  name: "dingdan",
-                                  label: "订单号",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "date",
-                                  label: "日期",
-                                  groupName: "${devaddr}"
-                                },
-                                {
-                                  name: "desc",
-                                  label: "信息",
-                                  groupName: "${devaddr}"
-                                },
-                              ]
-                            },
+                            }
                           ],
                           type: 'form',
 
@@ -1041,18 +761,13 @@ const schema = {
                         title: '查看任务详情'
                       },
                       actionType: 'drawer',
-                      visibleOn: "detail.payout=='已派发'"
+                      // visibleOn: "detail.payout=='已派发'"
                     },
                   ]
                 }
               ],
               headerToolbar: [],
               footerToolbar: [
-                // {
-                //     type: 'tpl',
-                //     tpl: '定制内容示例：当前有 ${count} 条数据。',
-                //     className: 'v-middle'
-                // },
                 "switch-per-page",
                 {
                   align: 'left',
@@ -1060,8 +775,8 @@ const schema = {
                 },
                 { align: 'left', type: 'statistics' }
               ],
-              perPageAvailable: [10, 20, 50, 100],
               alwaysShowPagination: true,
+              perPageAvailable: [10, 20, 50, 100],
               syncLocation: false
             }
           ]

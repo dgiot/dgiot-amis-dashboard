@@ -143,6 +143,7 @@ const routerConfigs: LayoutConfig[] = [
                 routes: [
                     // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "http://121.5.171.21" },
                     { path: '/index', name: '总控台', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/index.schema.ts' },
+                    // { path: '/index', name: '测试', icon: 'DashboardOutlined', pagePath: '/amis/dgiot/dashboard/ceshi.schema.ts' },
                     { path: '/demo', name: '生产报工', icon: 'HighlightOutlined', pagePath: '/amis/dgiot/dashboard/demo.schema.ts' },
                     { path: '/material', name: '物料消耗', icon: 'CopyOutlined', pagePath: '/amis/dgiot/dashboard/material.schema.ts' },
                     // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
@@ -165,12 +166,13 @@ const routerConfigs: LayoutConfig[] = [
                 icon: 'DeliveredProcedureOutlined',
                 routes: [
                     // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "http://121.5.171.21" },
-                    { path: '/proreport', name: '生产报工管理', icon: 'DotChartOutlined', pagePath: '/amis/dgiot/production/proministry.schema.ts' },
-                    { path: '/proflow', name: '工艺流程管理', icon: 'OrderedListOutlined', pagePath: '/amis/dgiot/production/processflow.schema.ts' },
-                    { path: '/proplan', name: '生产计划管理', icon: 'BarsOutlined', pagePath: '/amis/dgiot/production/proplan.schema.ts' },
-                    { path: '/proworder', name: '生产工单管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/proworder.schema.ts' },
-                    { path: '/propick', name: '领料管理', icon: 'RetweetOutlined', pagePath: '/amis/dgiot/production/propick.schema.ts' },
-                    { path: '/profeed', name: '补料管理', icon: 'PlusSquareOutlined', pagePath: '/amis/dgiot/production/profeed.schema.ts' },
+                    { path: '/proreport', name: '生产计划管理', icon: 'DotChartOutlined', pagePath: '/amis/dgiot/production/proministry.schema.ts' },
+                    // { path: '/proworder', name: '生产工单管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/proworder.schema.ts' },
+                    // { path: '/printing', name: '印染管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/yingran.schema.ts' },
+                    // { path: '/slitting', name: '分切管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/fenqie.schema.ts' },
+                    // { path: '/proflow', name: '工艺流程管理', icon: 'OrderedListOutlined', pagePath: '/amis/dgiot/production/processflow.schema.ts' },
+                    // { path: '/propick', name: '领料管理', icon: 'RetweetOutlined', pagePath: '/amis/dgiot/production/propick.schema.ts' },
+                    // { path: '/profeed', name: '补料管理', icon: 'PlusSquareOutlined', pagePath: '/amis/dgiot/production/profeed.schema.ts' },
                     // // { path: "/02", name: "常规CURD", icon: "TableOutlined", pagePath: "/amis/curd-01-general.schema.ts" },
                     // {
                     //     path: `/konva/:devaddr/:productid`,
@@ -183,6 +185,22 @@ const routerConfigs: LayoutConfig[] = [
                     // // { path: `/konva`, name: "konva", icon: "BulbOutlined", pagePath: "/react/konva.react.tsx",hideMenu:true },
                     // { path: '/05', name: 'html页面', icon: 'BulbOutlined', pagePath: '/typescript/index.html' },
                     // { path: '/chart', name: 'Chart图标', icon: 'BulbOutlined', pagePath: '/amis/chart-00.schema.ts' }
+                ]
+            },
+            {
+                path: '/qControl',
+                name: '品控管理',
+                icon: 'DragOutlined',
+                routes: [
+                    // { path: "/00", name: "dashboard", icon: "WindowsOutlined", pagePath: "http://121.5.171.21" },
+                    // { path: '/proreport', name: '生产计划管理', icon: 'DotChartOutlined', pagePath: '/amis/dgiot/production/proministry.schema.ts' },
+                    { path: '/proworder', name: '生产工单管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/proworder.schema.ts' },
+                    { path: '/spunlace', name: '水刺管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/shuici.schema.ts' },
+                    { path: '/printing', name: '印染管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/yingran.schema.ts' },
+                    { path: '/slitting', name: '分切管理', icon: 'BlockOutlined', pagePath: '/amis/dgiot/production/fenqie.schema.ts' },
+                    { path: '/proflow', name: '工艺流程管理', icon: 'OrderedListOutlined', pagePath: '/amis/dgiot/production/processflow.schema.ts' },
+                    { path: '/propick', name: '领料管理', icon: 'RetweetOutlined', pagePath: '/amis/dgiot/production/propick.schema.ts' },
+                    { path: '/profeed', name: '补料管理', icon: 'PlusSquareOutlined', pagePath: '/amis/dgiot/production/profeed.schema.ts' },
                 ]
             },
             {

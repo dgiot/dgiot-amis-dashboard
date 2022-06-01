@@ -108,7 +108,7 @@ function printLogger(option: LoggerOption, message: any[]) {
         // levelStyle[level],
         `${level === 'log' || level === 'info' ? '✧' /*✦*/ : ''}[${dayjs(new Date()).format('HH:mm:ss')}] ${lodash.padEnd(
             level.toLowerCase(),
-            5
+            // 5
         )} | ${moduleName} - `
     ];
     const log = Function.prototype.bind.call(console[level] || console.log, console);

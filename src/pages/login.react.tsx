@@ -30,7 +30,16 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
             () => this.setState({ loading: false })
         );
     };
-
+    componentDidMount() {
+        /**
+         * https://blog.csdn.net/jiang7701037/article/details/95407546
+         * react route query
+         */
+       localStorage.setItem("roleId",'')
+       localStorage.setItem("departmentId",'')
+       console.log('查看token',localStorage.getItem("departmentId"),localStorage.getItem("roleId"));
+       
+    }
     render() {
         const { loading } = this.state;
 
