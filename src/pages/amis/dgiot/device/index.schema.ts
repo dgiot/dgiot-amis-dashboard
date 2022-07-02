@@ -9,35 +9,150 @@ import { statusMapper } from '../../enum-data';
 
 // 详情对话框
 function detailsDialog() {
-    return {
+    return  {
         type: 'button',
-        label: '查看',
+        label: '详情',
         level: 'info',
-        // size: 'xs',
-        actionType: 'dialog',
-        dialog: {
-            title: '查看设备 - ${orderCode}',
-            closeOnEsc: true,
-            actions: [{ type: 'button', label: '关闭', level: 'primary', actionType: 'close' }],
+        drawer: {
             body: {
+                body: [
+                    {
+                        type:'static',
+                        name:'objectId'
+                    },
+                    {
+                        "type": "tabs",
+                        "mode": "tiled",
+                        "tabs": [
+                          {
+                            "title": "设备信息",
+                            "body": {
+                                "type": "property",
+                                "title": "设备信息",
+                                "items": [
+                                  {
+                                    "label": "id",
+                                    "content": "${objectId}"
+                                  },
+                                  {
+                                    "label": "设备编号",
+                                    "content": "${devaddr}"
+                                  },
+                                  {
+                                    "label": "安装位置",
+                                    "content": "${address}"
+                                  },
+                                  {
+                                    "label": "安装位置",
+                                    "content": "${address}",
+                                    "span": 2
+                                  },
+                                  {
+                                    "label": "IDC",
+                                    "content": "beijing"
+                                  },
+                                  {
+                                    "label": "Note",
+                                    "content": "其它说明",
+                                    "span": 3
+                                  }
+                                ]
+                              }
+                          },
+                          {
+                            "title": "实时数据",
+                            "body": "选项卡内容2"
+                          },
+                          {
+                            "title": "历史数据",
+                            "body": "选项卡内容3",
+                            "icon": "fa fa-flag",
+                            "iconPosition": "right"
+                          }
+                        //   {
+                        //     "title": "选项卡4",
+                        //     "body": "选项卡内容4",
+                        //     "icon": "fa fa-flag",
+                        //     "iconPosition": "right"
+                        //   }
+                        ]
+                      },
+                    // {
+                    //     type: "crud",
+                    //     source: '${content.taskList}',
+                    //     // api: "/usemock/keystep", //"/usemock/device/listAll",
+                    //     syncLocation: false,
+                    //     headerToolbar: [
+                    //         "export-excel",
+                    //     ],
+                    //     columns: [
+                    //         {
+                    //             name: "dingdan",
+                    //             label: "订单号",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "pname",
+                    //             label: "品名",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "date",
+                    //             label: "日期",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "long",
+                    //             label: "长",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "width",
+                    //             label: "宽",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "height",
+                    //             label: "高",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "kweight",
+                    //             label: "克重",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "mweight",
+                    //             label: "毛重",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "mweight",
+                    //             label: "接头数",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "check",
+                    //             label: "品检",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //         {
+                    //             name: "fenqie",
+                    //             label: "分切",
+                    //             groupName: "${devaddr}"
+                    //         },
+                    //     ]
+                    // }
+                ],
                 type: 'form',
-                // mode: "inline",
-                className: classnames(FormClassName.label5x),
-                // initApi: {
-                //     method: 'get',
-                //     url: `/iotapi/classes/Device`
-                // },
-                controls: [
-                    { type: 'static', name: 'name', label: '设备名称' },
-                    { type: 'static', name: 'devaddr', label: '设备编号' },
-                    { type: 'static', name: 'detail.brand', label: '设备品牌' },
-                    { type: 'static', name: 'detail.devModel', label: '设备型号' },
-                    { type: 'static', name: 'detail.address', label: '安装位置' },
-                    { type: 'static', name: 'detail.desc', label: '描述' }
-                ]
-            }
-        }
-    };
+
+
+            },
+            size: "xl",
+            title: '查看任务详情'
+        },
+        actionType: 'drawer',
+    }
 }
 
 // 编辑对话框

@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { FormClassName } from '@/amis-types';
-import { FormatTime, getTime, getRoleId,getUserName } from '@/utils/utils'
+import { FormatTime, getTime, getRoleId, getUserName } from '@/utils/utils'
 import { options } from 'numeral';
 // import { getTreeParents, getRoleId, getDepartmentId, getnowTime } from '@/utils/utils'
 //165b80ab1e 生产工单
@@ -74,9 +74,13 @@ function distDialog() {
             console.log('api数据查看', api.data);
             let setAcl = api.data.ACL
             // let index = 0
+            let ctt = api.data.content
             for (let i in setAcl) {
               if (i != getRoleId() && setAcl[i].write && setAcl[i].write == true) {
-                setAcl[i].write = false
+                if (ctt.personlist[0].objectId != i) {
+                  setAcl[i].write = false
+                }
+
                 // console.log('替换成功');
               }
             }
@@ -84,12 +88,12 @@ function distDialog() {
               "read": true,
               "write": true
             }
-            let ctt = api.data.content
-            console.log('cttttt',ctt);
+
+            console.log('cttttt', ctt);
             let nowpeople = ''
             for (let o in ctt.pinfo) {
-              if (o!='people') {
-                nowpeople= nowpeople +ctt.pinfo[o]
+              if (o != 'people') {
+                nowpeople = nowpeople + ctt.pinfo[o]
                 // console.log('替换成功');
               }
             }
@@ -124,30 +128,30 @@ function distDialog() {
         controls: [
           { type: 'static', name: 'content', label: '唯一码', visibleOn: "false" },
           { name: 'ACL', type: 'input-text', visibleOn: "false", label: '权限' },
-          {        
-              "label": "审核",
-              "type": "select",
-              "name": "isaudit",
-              "options": [
-                {
-                  "label": "合格",
-                  "value": "合格"
-                },
-                {
-                  "label": "不合格",
-                  "value": "不合格"
-                }
-              ],
-              required: true
+          {
+            "label": "审核",
+            "type": "select",
+            "name": "isaudit",
+            "options": [
+              {
+                "label": "合格",
+                "value": "合格"
+              },
+              {
+                "label": "不合格",
+                "value": "不合格"
+              }
+            ],
+            required: true
           },
-          {        
+          {
             label: '审核意见',
             type: 'input-text',
             name: 'objection',
-            value:'合格通过'
+            value: '合格通过'
             // "menuTpl": "<div>${label} 值：${value}, 当前是否选中: ${checked}</div>",
             // required: true
-        },
+          },
           {
             name: 'dept',
             type: 'nested-select',
@@ -158,24 +162,18 @@ function distDialog() {
             // source: "/usemock/getgongyi",
             source: {
               method: "get",
-              url: '/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-              // headers: {
-              //     sessionToken: Cookies.get('authorization')
-              // },
-              // data: {},
+              url: "/iotapi/usertree", //'/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+              responseData: {
+                options: "${options|pick:label~label,value~value,children~children}"
+              },
               adaptor: function (payload: any, response: any, api: any) {
                 console.log("payloadtree", payload);
-                // payload.data.options =  getTreeParents(payload.data.options)
-                console.log("转换树options", payload.data.options);
                 return {
                   ...payload,
                   status: 0,
                   msg: 'ok'
                 };
               },
-              responseData: {
-                options: "${options|pick:label~label,value~value,children~children}"
-              }
             },
             required: true
           },
@@ -518,7 +516,7 @@ const schema = {
                 where: {
                   "product": "d5f1b2dcd8", // "d5f1b2dcd8", 
                   "detail.payout": "已派发",
-                  "content.c_process":'水刺车间'
+                  "content.c_process": '水刺车间'
                 }
               },
               // "source":"${results}",
@@ -611,7 +609,7 @@ const schema = {
                 },
                 {
                   name: 'content.mhour',
-                  label: '工长'
+                  label: '工期'
                 },
                 {
                   name: "content.isaudit",
@@ -687,7 +685,7 @@ const schema = {
                               type: 'static',
                               label: '实际结束时间',
                             },
-                           
+
                             // {
                             //     mode: 'inline',
                             //     name: 'title1',

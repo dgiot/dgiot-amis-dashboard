@@ -72,10 +72,12 @@ function distDialog() {
           requestAdaptor: function (api: any) {
             console.log('api数据查看', api.data);
             let setAcl = api.data.ACL
+            let ctt = api.data.content
             // let index = 0
             for (let i in setAcl) {
               if (i != getRoleId() && setAcl[i].write && setAcl[i].write == true) {
-                setAcl[i].write = false
+                if(ctt.personlist[0].objectId!=i)
+                   setAcl[i].write = false
                 // console.log('替换成功');
               }
             }
@@ -83,7 +85,7 @@ function distDialog() {
               "read": true,
               "write": true
             }
-            let ctt = api.data.content
+           
             ctt.pinfo = {}
             ctt.personel = api.data.dept
             let list = ctt.personlist
@@ -144,25 +146,35 @@ function distDialog() {
             // source: "/usemock/getgongyi",
             source: {
               method: "get",
-              url: '/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+              url: "/iotapi/usertree", //'/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+              responseData: {
+                  options: "${options|pick:label~label,value~value,children~children}"
+                },
               // headers: {
               //     sessionToken: Cookies.get('authorization')
               // },
-              // data: {},
+              // data: {
+              //     where: { "objectId": "7a281d758d" },
+              //     include: true,
+              //     limit: 50
+              // },
               adaptor: function (payload: any, response: any, api: any) {
-                console.log("payloadtree", payload);
-                // payload.data.options =  getTreeParents(payload.data.options)
-                console.log("转换树options", payload.data.options);
-                return {
-                  ...payload,
-                  status: 0,
-                  msg: 'ok'
-                };
+                  console.log("payloadtree", payload);
+                  // let options = getuserList(payload.data.rows)
+                  // console.log('fasfaf',options);
+
+                  // payload.data.options =  getTreeParents(payload.data.options)
+                  // console.log("转换树options", payload.data.options);
+                  return {
+                      ...payload,
+                      status: 0,
+                      msg: 'ok'
+                  };
               },
-              responseData: {
-                options: "${options|pick:label~label,value~value,children~children}"
-              }
-            },
+              // responseData: {
+              //     options: "${options|pick:label~label,value~value,children~children}"
+              // }
+          },
             required: true
           },
           // { type: 'text', name: 'content.mynumber', label: '派发数量' },

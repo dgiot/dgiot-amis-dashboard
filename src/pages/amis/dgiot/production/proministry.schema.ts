@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { FormClassName } from '@/amis-types';
-import { getTreeParents, getuserList, getRoleId, getDepartmentId, getnowTime } from '@/utils/utils'
+import { getTreeParents, getuserList, getRoleId, getDepartmentId, getnowTime, getBinaryFromFile } from '@/utils/utils'
 //生产报工
 // 详情对话框
 function detailsDialog() {
@@ -155,37 +155,21 @@ function distDialog() {
                         // labelField: 'label',
                         // valueField: 'value',
                         selectMode: "tree",
-                        // source: "/usemock/getgongyi",
                         source: {
                             method: "get",
-                            url: "/iotapi/roleuser", //'/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-                            // headers: {
-                            //     sessionToken: Cookies.get('authorization')
-                            // },
-                            data: {
-                                where: { "objectId": "259fbc6e7b" },
-                                include: true,
-                                limit: 50
+                            url: "/iotapi/usertree", //'/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+                            responseData: {
+                              options: "${options|pick:label~label,value~value,children~children}"
                             },
                             adaptor: function (payload: any, response: any, api: any) {
-                                console.log("payloadtree", payload);
-                                let options = getuserList(payload.data.rows)
-                                // console.log('fasfaf',options);
-
-                                // payload.data.options =  getTreeParents(payload.data.options)
-                                // console.log("转换树options", payload.data.options);
-                                return {
-                                    data: {
-                                        options
-                                    },
-                                    status: 0,
-                                    msg: 'ok'
-                                };
+                              console.log("payloadtree", payload);
+                              return {
+                                ...payload,
+                                status: 0,
+                                msg: 'ok'
+                              };
                             },
-                            // responseData: {
-                            //     options: "${options|pick:label~label,value~value,children~children}"
-                            // }
-                        },
+                          },
                         required: true
                     },
                     // { type: 'text', name: 'content.mynumber', label: '派发数量' },
@@ -209,7 +193,7 @@ const whereData = {
 const schema = {
     type: 'page',
     data: {
-        "roleId": localStorage.getItem("roleId"),
+        "roleId": "${rows[0].objectId}",
         "departmentId": localStorage.getItem("departmentId"),
     },
     // "initApi": {
@@ -267,7 +251,7 @@ const schema = {
                                 body: {
                                     api: {
                                         method: 'post',
-                                        url: '/iotapi/amis/Device1',
+                                        url: '/iotapi/amis/Device',
 
                                         // headers: {
                                         //     sessionToken: Cookies.get('authorization')
@@ -292,12 +276,13 @@ const schema = {
                                             }
                                             list.push(person)
                                             ctt.personlist = list
-                                            console.log('image',ctt.image)
+                                            ctt.imageUrl = 'http://121.5.171.21:1250'+api.data.myUrl
+                                            delete api.data.myUrl
+                                            console.log('image', ctt.image)
                                             return {
                                                 ...api,
                                                 data: {
                                                     ...api.data, // 获取暴露的 api 中的 data 变量
-                                                    //   foo: 'bar' // 新添加数据
                                                     "ACL": setAcl,
                                                     content: ctt,
                                                     "detail": {
@@ -406,40 +391,51 @@ const schema = {
                                             label: "图片上传",
                                             // asBlob:true,
                                             receiver: {
-                                                url: '/iotapi/upload',
+                                                url: '/upload',
                                                 method: 'post',
+                                               requestAdaptor:function (api: any) {
+                                                    console.log('文件上传内容', api, api.data[0])
+                                                    var file = api.data
+                                                    var jsonData = {file:''}
+                                                    file.forEach((value:any, key:any) => jsonData[key] = value);
+                                                    console.log(jsonData);  
+                                                    // var res:any = await getBinaryFromFile(file)
+                                                     let token = Cookies.get('authorization') || ''
+                                                     console.log('token', token)
+                                                     var data = new FormData();
+                                                     data.append("file", jsonData.file);
+                                                     data.append("scene", "default");
+                                                     data.append("filename", "");
+                                                     data.append("output", "json");
+                                                     data.append("path", "");
+                                                     data.append("code", "");
+                                                     data.append("auth_token", token);
+                                                     data.append("submit", "upload");
+                                                     console.log('data内容', data)
+                                                     return {
+                                                         ...api,
+                                                         data: data
+ 
+                                                     };           
+                                                },
                                                 adaptor: function (payload: any, response: any, api: any) {
-                                                    // // console.log("这是对低代码数据的处理",payload);
-                                                    // let data = payload.data.rows[0].data.body[0].options;
-                                                    // // console.log("这是对低代码数据的处理",payload,data);
-                                                    // payload.data = {} //重新定义data
-                                                    // payload.data.options = data;
-                                                    // // console.log("这是对低代码数据的处理222",payload);
-                                                    // console.log('上传图片',payload,response);
-                                                    
                                                     return {
                                                         ...payload,
                                                         status: 0,
                                                         msg: 'ok'
                                                     };
                                                 },
-                                                // headers: {
-                                                //     'content-type': 'multipart/form-data'
-                                                //     // sessionToken: Cookies.get('authorization')
-                                                // },
-                                                // data: {
-
-                                                // }
 
                                             },
                                             autoFill: {
                                                 myUrl: "${path}"
-                                              }
+                                            }
                                         },
                                         {
-                                          "type": "input-text",
-                                          "name": "myUrl",
-                                          "label": "url"
+                                            type: "input-text",
+                                            name: "myUrl",
+                                            label: "url",
+                                            disabledOn: "${false}"
                                         },
                                         {
                                             name: 'content.name',
@@ -608,49 +604,19 @@ const schema = {
                             mode: 'table',
                             api: {
                                 method: 'get',
-                                url: `/iotapi/classes/Device`,
-                                // data: {
-                                //     // "skip": "${page}",
-                                //     // "limit": "${perPage}",
-                                //     // "count": "objectId"
-                                // },
-                                // "adaptor": "return {\n    ...payload,\n    count:payload.count,\n results:payload.results \n}",
-
-                                // responseData: {
-                                //     "$": "$$",
-                                //     count: '${count}',
-                                //     rows: '${rows}'
-                                // },
+                                url: `/iotapi/classes/Device`,                          
                                 adaptor: function (payload: any, response: any, api: any) {
                                     console.log("payloadtree", payload);
-                                    // let options =  getuserList(payload.data.rows)
-                                    // console.log('fasfaf',options);
-
-                                    // payload.data.options =  getTreeParents(payload.data.options)
-                                    // console.log("转换树options", payload.data.options);
                                     return {
                                         data: {
                                             count: payload.data.count,
-                                            rows: payload.data.rows
+                                            rows: payload.data.rows,
+                                            number:"11111"
                                         },
                                         status: 0,
                                         msg: 'ok'
                                     };
                                 },
-                                // adaptor: function (payload: any, response: any, api: any) {
-                                //     console.log("payload111111",payload,response);
-                                //     // payload.count = payload.items.length
-
-                                //     return {
-                                //         ...payload,
-                                //         data:{
-                                //             count:payload.data.count,
-                                //             items:payload.data.rows,
-                                //         },
-                                //         status: 0,
-                                //         msg: 'ok'
-                                //     };
-                                // }
                             },
                             defaultParams: {
                                 skip: 0,

@@ -72,9 +72,11 @@ function distDialog() {
           requestAdaptor: function (api: any) {
             console.log('api数据查看', api.data);
             let setAcl = api.data.ACL
+            let ctt = api.data.content
             for (let i in setAcl) {
               if (i != getRoleId() && setAcl[i].write && setAcl[i].write == true) {
-                setAcl[i].write = false
+                if (ctt.personlist[0].objectId != i)
+                  setAcl[i].write = false
                 // console.log('替换成功');
               }
             }
@@ -82,7 +84,7 @@ function distDialog() {
               "read": true,
               "write": true
             }
-            let ctt = api.data.content
+
             let nowpeople = ''
             for (let o in ctt.pinfo) {
               if (o != 'people') {
@@ -102,7 +104,7 @@ function distDialog() {
             ctt.personlist = list
             // console.log('setAcl', setAcl);
             // 合并录入数据
-            let infosList:any = []
+            let infosList: any = []
             ctt.fqinfo.taskList.forEach((info: any, index: Number) => {
               let newobj = {}
               let scinfo = {}
@@ -120,16 +122,16 @@ function distDialog() {
                 if (e.pronumber == info.pronumber) {
                   yrinfo = e
                   return
-            
+
                 }
               });
-              let obj =  Object.assign(newobj,info,scinfo,yrinfo)
+              let obj = Object.assign(newobj, info, scinfo, yrinfo)
               // console.log('info', obj);
               infosList.push(obj)
 
             });
-            console.log('infosList',infosList);
-            
+            console.log('infosList', infosList);
+
             return {
               ...api,
               data: {
@@ -185,27 +187,20 @@ function distDialog() {
             // labelField: 'label',
             // valueField: 'value',
             selectMode: "tree",
-            // source: "/usemock/getgongyi",
             source: {
               method: "get",
-              url: '/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
-              // headers: {
-              //     sessionToken: Cookies.get('authorization')
-              // },
-              // data: {},
+              url: "/iotapi/usertree", //'/usemock/usertree', //'/iotapi/roletree',  // /usemock/usercrtree "/iotapi/amis/Dict", //"/iotapi/classes/Dict", 
+              responseData: {
+                options: "${options|pick:label~label,value~value,children~children}"
+              },
               adaptor: function (payload: any, response: any, api: any) {
                 console.log("payloadtree", payload);
-                // payload.data.options =  getTreeParents(payload.data.options)
-                console.log("转换树options", payload.data.options);
                 return {
                   ...payload,
                   status: 0,
                   msg: 'ok'
                 };
               },
-              responseData: {
-                options: "${options|pick:label~label,value~value,children~children}"
-              }
             },
             required: true
           },
@@ -393,7 +388,7 @@ const schema = {
                 },
                 {
                   name: 'content.mhour',
-                  label: '工长'
+                  label: '工期'
                 },
                 {
                   name: "content.fqinfo.isaudit",

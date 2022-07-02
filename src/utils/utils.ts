@@ -174,6 +174,16 @@ const  FormatTime = (t:any)=> {
     
    return name
 }
+function getBinaryFromFile(file:any) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => resolve(reader.result));
+        reader.addEventListener("error", err => reject(err));
+
+        reader.readAsBinaryString(file);
+    });
+}
 const getUserName = () =>{
 
     let username =  localStorage.getItem('nick')
@@ -198,4 +208,4 @@ let getuserList = (data:Array<Object>) => {
 };
 // 原文链接：https://blog.csdn.net/m0_38134431/article/details/108453055
 
-export { hasPropertyIn, getPropOrStateValue, noValue, hasValue, getStrValue, getUrlParam, getPageLocation, getRouterLocation,FormatTime,getTime,getTreeParents,getuserList, getRoleId,getDepartmentId,getDeptName,getUserName,getnowTime};
+export { hasPropertyIn, getPropOrStateValue, noValue, hasValue, getStrValue, getUrlParam, getPageLocation, getRouterLocation,FormatTime,getTime,getTreeParents,getuserList, getRoleId,getDepartmentId,getDeptName,getUserName,getnowTime,getBinaryFromFile};

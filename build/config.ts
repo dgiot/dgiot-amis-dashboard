@@ -57,10 +57,10 @@ const settings: Settings = {
         changeOrigin: true,
         pathRewrite: { "^": "" }
       },
-      "/fileload/": {
+      "/upload": {
         target: "http://121.5.171.21:1250",
         changeOrigin: true,
-        pathRewrite: { "^/fileload/": "/" }
+        pathRewrite: { "^": "" }
       },
       "/usemock/": {
         target: "https://datav.usemock.com",
